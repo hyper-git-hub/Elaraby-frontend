@@ -1,0 +1,412 @@
+<div class="no-space margin-bottom-30 bg-teal-700 shadow card widget shadow card">
+
+  <!-- old data strip bar -->
+  <!-- <div class="col-lg-5">
+    <div class="col-sm-6">
+      <div class="white vertical-align height-80 text-center  margin-bottom-0">
+        <div class="vertical-align-middle">
+
+          <b>{{((DeviceStateEnum[signalRresponse?.chs]) || '-') }}</b>
+          <div class="font-size-12">Device State</div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="white vertical-align height-80 text-center  margin-bottom-0">
+        <div class="vertical-align-middle"
+          *ngIf="signalRresponse?.err == 1 || signalRresponse?.err == 2 || signalRresponse?.err == 3">
+
+          <b class=" font-size-16">--</b>
+          <div class="font-size-12">Current Temperature</div>
+
+        </div>
+        <div class="vertical-align-middle">
+          <b class=" font-size-16">{{(((signalRresponse?.cht == '404' && signalRresponse?.cht != 'false') ? '0℃' :
+            signalRresponse.cht + "℃") || 0)}}
+          </b>
+          <div class="font-size-12">Current Temperature</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-7">
+    <div class="col-sm-4">
+      <div class="white vertical-align height-80 text-center  margin-bottom-0">
+        <div class="vertical-align-middle">
+
+          <b class="font-size-16">{{(signalRresponse?.ctt == '404' ? 0 : (signalRresponse.ctt ? signalRresponse.ctt : 0)
+            || 0)}}℃</b>
+          <div class="font-size-12">Set Temperature</div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="white vertical-align height-80 text-center  margin-bottom-0">
+        <div class="vertical-align-middle">
+
+          <b class="font-size-16">{{(signalRresponse?.err > 0 ? signalRresponse?.err : '-') | number:'1.0-0'}}</b>
+          <div class="font-size-12">Recent Error</div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="white vertical-align height-90 text-center ">
+        <div class="vertical-align-middle">
+          <div class="">
+            <b class="font-size-14"> <span>{{(signalRresponse.ts| date: 'medium') || '-'}}</span> </b>
+          </div>
+          <div class="font-size-12">Last Updated</div>
+
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div class="col-lg-12">
+    <div class="slikslider margin-bottom-0 bg-teal-700  slick-initialized slick-slider" id="slikslider-types"
+      role="toolbar">
+
+      <div style="margin-bottom: -10px;" aria-live="polite" class="slick-list draggable">
+        <div id="blt" data-slick='{"slidesToShow": 7, "slidesToScroll": 7}' style="max-height: 120px !important;">
+          <div class="widget margin-0">
+            <div style="display: flex; align-items: center; justify-content: center;"
+              class="padding-15 bg-teal-700 height-90 text-center relative">
+              <div class="white">
+                <div class="margin-bottom-0">
+                  <div class="font-size-12 ">
+                    Device State
+                  </div>
+                </div>
+                <div class="">
+                  <b class="font-size-14"> {{((DeviceStateEnum[signalRresponse?.chs]) || '-') }}</b>
+                </div>
+              </div>
+            </div>
+          </div> 
+
+          <div class="widget margin-0 ">
+            <div style="display: flex; align-items: center; justify-content: center;"
+              class=" padding-15 bg-teal-700 height-90 text-center relative">
+              <div class="white">
+                <div class="margin-bottom-0">
+                  <div class="font-size-12 ">
+                    Display Temperature
+                  </div>
+                </div>
+                <div class="">
+                  <b class="font-size-14">
+                    {{(((signalRresponse?.cdt == '404' && signalRresponse?.cdt != 'false') ? '0℃' : signalRresponse.cdt
+                    + "℃") || 0)}}
+                  </b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget margin-0 ">
+            <div style="display: flex; align-items: center; justify-content: center;"
+              class=" padding-15 bg-teal-700 height-90 text-center relative">
+              <div class="white">
+                <div class="margin-bottom-0">
+                  <div class="font-size-12 ">
+                    Flange Temperature
+                  </div>
+                </div>
+                <div class="">
+                  <b class="font-size-14">{{(((signalRresponse?.cht == '404' && signalRresponse?.cht != 'false') ? '0℃'
+                    : signalRresponse.cht + "℃") || 0)}}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget margin-0 ">
+            <div style="display: flex; align-items: center; justify-content: center;"
+              class=" padding-15 bg-teal-700 height-90 text-center relative">
+              <div class="white">
+                <div class="margin-bottom-0">
+                  <div class="font-size-12 ">
+                    Desired Temperature
+                  </div>
+                </div>
+                <div class="">
+                  <b class="font-size-14">{{(signalRresponse?.ctt == '404' ? 0 : (signalRresponse.ctt ?
+                    signalRresponse.ctt : 0) || 0)}}℃</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget margin-0 ">
+            <div style="display: flex; align-items: center; justify-content: center;"
+              class=" padding-15 bg-teal-700 height-90 text-center relative">
+              <div class="white">
+                <div class="margin-bottom-0">
+                  <div class="font-size-12 ">
+                    Lock Mode
+                  </div>
+                </div>
+                <div class="">
+                  <b class="font-size-14" *ngIf="signalRresponse?.clm == 1">Enabled</b>
+                  <b class="font-size-14" *ngIf="signalRresponse?.clm == 0">Disabled</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget margin-0 ">
+            <div style="display: flex; align-items: center; justify-content: center;"
+              class=" padding-15 bg-teal-700 height-90 text-center relative">
+              <div class="white">
+                <div class="margin-bottom-0">
+                  <div class="font-size-12 ">
+                    Recent Error
+                  </div>
+                </div>
+                <div class="">
+                  <b class="font-size-14">{{signalRresponse?.err > 0 ? signalRresponse.err : '-'}}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="widget margin-0 ">
+            <div style="display: flex; align-items: center; justify-content: center;"
+              class=" padding-10 bg-teal-700 height-90 text-center relative">
+              <div class="white">
+                <div class="margin-bottom-0">
+                  <div class="font-size-12 ">
+                    Last Updated
+                  </div>
+                </div>
+                <div class="">
+                  <b class="font-size-14">{{(signalRresponse.ts | date: 'medium') || '-'}}</b>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div> -->
+
+  <!-- design fixed by wahab -->
+  <!-- <div class="col-lg-12">
+    <div class="col-sm-1">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            State
+          </div>
+          <div class="">
+            <b class="font-size-14">{{ DeviceStateEnum[signalRresponse?.chs] || '-' }}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12">
+            Display
+
+          </div>
+          <div class="">
+            <b class="font-size-14">{{(((signalRresponse?.cdt == null) ? '0℃' : signalRresponse.cdt
+              + "℃") || 0)}}
+            </b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12">
+            Flange
+          </div>
+          <div class="">
+            <b class="font-size-14">{{(((signalRresponse?.cht == '404' && signalRresponse?.cht != 'false') ? '0℃'
+              : signalRresponse.cht + "℃") || 0)}}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Desired
+          </div>
+          <div class="">
+            <b class="font-size-14"> {{(signalRresponse?.ctt == '404' ? 0 : (signalRresponse.ctt ?
+              signalRresponse.ctt : 0) || 0)}}℃</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Lock
+          </div>
+          <div class="">
+            <b class="font-size-14" *ngIf="signalRresponse?.clm == 1">Enabled</b>
+            <b class="font-size-14" *ngIf="signalRresponse?.clm == 0">Disabled</b>
+            <b class="font-size-14" *ngIf="signalRresponse?.clm == null">-</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Error
+          </div>
+          <div class="">
+            
+            <b class="font-size-14">
+              {{(signalRresponse?.err == '404.00' ? '-' : (signalRresponse?.err > 0 ?
+              signalRresponse.err : '-') )}}
+            </b>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Time
+          </div>
+          <div class="">
+            <b class="font-size-12">{{(signalRresponse.ts | date: 'medium') || '-'}}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+
+  <!-- design fixed by Kainat -->
+  <div class="col-lg-12">
+    <div class="col-sm-1">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            State
+          </div>
+          <div class="">
+            <b class="font-size-14">{{ DeviceStateEnum[signalRresponse?.chs] || '-' }}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12">
+            Display
+          </div>
+          <div class="">
+            <b class="font-size-14">{{(((signalRresponse?.cdt == null) ? '0℃' : signalRresponse.cdt
+              + "℃") || 0)}}
+            </b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12">
+            Flange
+          </div>
+          <div class="">
+            <b class="font-size-14">{{(((signalRresponse?.cht == '404' && signalRresponse?.cht != 'false') ? '0℃'
+              : signalRresponse.cht + "℃") || 0)}}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Desired
+          </div>
+          <div class="">
+            <b class="font-size-14"> {{(signalRresponse?.ctt == '404' ? 0 : (signalRresponse.ctt ?
+              signalRresponse.ctt : 0) || 0)}}℃</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Lock
+          </div>
+          <div class="">
+            <b class="font-size-14" *ngIf="signalRresponse?.clm == 1">Enabled</b>
+            <b class="font-size-14" *ngIf="signalRresponse?.clm == 0">Disabled</b>
+            <b class="font-size-14" *ngIf="signalRresponse?.clm == null">-</b>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-1">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Error
+          </div>
+          <div class="">
+            <b class="font-size-14">
+              {{(signalRresponse?.err == '404.00' ? '-' : (signalRresponse?.err > 0 ?
+              signalRresponse.err : '-') )}}
+            </b>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-sm-2">
+      <div class="white vertical-align height-80 text-center margin-bottom-0">
+        <div class="vertical-align-middle">
+          <div class="font-size-12 ">
+            Time
+          </div>
+          <div class="">
+            <b class="font-size-12">{{(signalRresponse.ts | date: 'medium') || '-'}}</b>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="label white bg-teal-800 font-size-12 margin-top-10 flat absolute  left right bottom">
+    <span>
+      <img src="/assets/images/iop/loader-live.gif" alt="img" height="20">
+    </span>
+    Live Device Status
+  </div>
+
+</div>

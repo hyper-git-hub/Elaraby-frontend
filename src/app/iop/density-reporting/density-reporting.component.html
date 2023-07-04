@@ -1,0 +1,118 @@
+<!-- Event creation reporting-->
+<div class="col-lg-4">
+  <div class="panel panel-default ">
+    <div class="panel-heading">
+      <h3 class="panel-title font-weight-600">Events Created Reporting
+        <span class="font-weight-400 font-size-12 pull-right"> {{dateRangeEventsCreated[0] | date: 'shortDate'}}
+          to {{dateRangeEventsCreated[1] | date: 'shortDate'}}</span>
+      </h3>
+
+    </div>
+    <div class="panel-body padding-0" style="min-height: 200px">
+      <div class="row margin-bottom-40">
+        <div class="col-lg-4">
+
+        </div>
+        <div style="padding-top: 15px;">
+          <app-reporting-buttons [hideCalendar]="true" [hideBtn]="'yesterday'" [type]="'eventsCreated'"
+            [selected]="'today'" (btnClicked)="getNumberOfEventsCreated($event)" [buttonGroupSize]="'btn-group-xs'">
+          </app-reporting-buttons>
+        </div>
+      </div>
+      <div style="margin-top: 15px;" class="row">
+        <!-- <pre>{{pieChartData|json}}</pre> -->
+        <app-pie-chart *ngIf="pieChartData.length;else notFound" [chartHeight]="'250px'" [pieChartData]="pieChartData"
+          [pieChartColors]="pieChartColors" [pieChartLabels]="pieChartLabel">
+        </app-pie-chart>
+
+      </div>
+      <app-spin-loading [appLoader]="numOfEventsReportingLoader" [size]="'sm'"></app-spin-loading>
+
+
+    </div>
+  </div>
+</div>
+<!-- Event creation reporting end-->
+
+
+<!-- Density reporting started-->
+<div class="col-lg-8">
+  <div class="panel panel-default ">
+    <div class="panel-heading">
+      <h3 class="panel-title font-weight-600">Density Reporting
+        <span class="font-weight-400 font-size-12 pull-right"> {{dateRangeDensity[0] | date: 'shortDate'}}
+          to {{dateRangeDensity[1] | date: 'shortDate'}}</span>
+
+      </h3>
+
+    </div>
+    <div class="panel-body padding-0" style="min-height: 200px">
+
+
+      <div class="row margin-bottom-15">
+        <div class="col-lg-3">
+          <!-- <h6>Filter By Event Type -->
+          <!-- <p-dropdown styleClass="prime-dropdown prime-dropdown-sm"
+            [options]="eventTypeDropdown" [(ngModel)]="selectedEvent">
+
+            </p-dropdown> -->
+
+          <!-- <p-multiSelect
+              styleClass="prime-dropdown prime-dropdown-sm"
+              [options]="eventTypeDropdown"
+              [maxSelectedLabels]="2"
+              [filterPlaceHolder]="'Search Events'"
+              [(ngModel)]="selectedEvent">
+            </p-multiSelect> -->
+          <!-- </h6> -->
+        </div>
+        <div class="col-lg-3">
+          <!-- <h6>Filter By User
+            <p-multiSelect
+              styleClass="prime-dropdown prime-dropdown-sm"
+              [options]="userDropdown"
+              [maxSelectedLabels]="2"
+              [filterPlaceHolder]="'Search Users'"
+              [(ngModel)]="selectedUser">
+            </p-multiSelect>
+          </h6> -->
+        </div>
+        <div class="col-lg-6 padding-top-15">
+          <app-reporting-buttons [hideCalendar]="true" [type]="'density'" [selected]="'today'"
+            (btnClicked)="getDensityReporting($event)" [buttonGroupSize]="'btn-group-xs'"></app-reporting-buttons>
+
+          <!-- [selected]="'today'"  -->
+          <!--          <button [disabled]="densityReportingLoader.visibility" class="btn btn-info btn-sm"-->
+          <!--                  (click)="getDensityReporting()">Generate-->
+          <!--          </button>-->
+        </div>
+
+
+      </div>
+      <div class="row">
+        <!-- <pre>{{densityLabel | json}}</pre>
+        <pre>{{densityColors | json}}</pre> -->
+
+        <!-- <app-charts [data]="salesChartData" yaxisLabel="Orders" [labels]="salesChartLabels">
+        </app-charts> -->
+
+        <app-bar-chart *ngIf="loadchart && densityData.length;else notFound" [barChartData]="densityData"
+          [barChartColors]="densityColors" [barChartLabels]="densityLabel" [chartHeight]="'300px'"
+          [displayDataAboveBars]="true" [axislabels]="densityAxisLabel" [showGridLines]="true" [stacked]="true">
+        </app-bar-chart>
+
+        <app-spin-loading [appLoader]="densityReportingLoader" [size]="'sm'"></app-spin-loading>
+
+      </div>
+
+    </div>
+  </div>
+
+  <ng-template #notFound>
+    <div>
+      <app-data-not-found></app-data-not-found>
+    </div>
+  </ng-template>
+
+</div>
+<!-- Density reporting ended-->

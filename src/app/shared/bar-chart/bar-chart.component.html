@@ -1,0 +1,10 @@
+<div [ngStyle]="styleObject()" style="display: block;">
+  <canvas baseChart #myCanvas
+          [datasets]="barChartData"
+          [labels]="barChartLabels"
+          [colors] = "barChartColors"
+          [options]="barChartOptions"
+          [chartType]="barChartType">
+
+  </canvas>
+</div>

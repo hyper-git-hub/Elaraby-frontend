@@ -1,0 +1,21 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import "../node_modules/primeng/resources/themes/omega/theme.css";
+@import "../node_modules/primeng/resources/primeng.min.css";
+
+@import url('assets/styles/bootstrap-extend.css');
+@import url('assets/styles/style-iop.css');
+@import url('assets/styles/developer.css');
+
+
+@import url('assets/styles/primeng.css');
+@import url('~@swimlane/ngx-datatable/release/assets/icons.css');
+@import url('~@swimlane/ngx-datatable/release/index.css');
+@import url('assets/styles/material-datatable.css');
+
+
+
+
+@import url('assets/styles/global.css');
+

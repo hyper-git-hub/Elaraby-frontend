@@ -1,0 +1,820 @@
+<app-breadcrumbs [items]="items" [home]="home"></app-breadcrumbs>
+<div class="page-content  container-fluid">
+
+  <div style="min-height: 250px; font-size: 18px;  display: flex;  align-items: center;  justify-content: center;"
+    class="text-center media margin-bottom-30 bg-white padding-30 margin-top-0  card shadow light" *ngIf="displayError">
+    <span>Water heater not found.</span>
+  </div>
+
+  <div class="row" [hidden]="!displayData">
+    <div class="col-lg-3">
+      <app-item-meta-information [list]="heaterMetaInfo" [height]="'304px'" [name]="device.name || '-'"
+        [image]="'/assets/images/iop/logo-waterheater.png'" [showBadge]="true" [showSignals]="true"
+        [signalsStrength]="signalsStrength"
+        [status]="[{label:dataReceived? 'Online': 'Offline', class:dataReceived? 'badge-success': 'badge-danger'}]">
+      </app-item-meta-information>
+    </div>
+
+    <div class="col-lg-9">
+      <div class="row no-space">
+        <div class="col-lg-12">
+          <app-live-data-strip *ngIf="device" [signalRresponse]="device?.signalRresponse"></app-live-data-strip>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div (click)="activeTab=4" class="widget shadow card">
+            <div class="widget-content padding-10 bg-blue-700 height-100 text-center pointer relative">
+              <div class="white">
+                <div class="counter-label margin-bottom-5   clearfix">
+                  <span class="font-size-14 ">
+                    No.of Users
+                  </span>
+
+                </div>
+                <div class="">
+                  <span class="counter-icon margin-right-5 ">
+                    <i> <img src="/assets/images/iop/icon-users.png" alt="img" height="40"> </i>
+                  </span>
+                  <b class="font-size-24">{{(deviceUsers.length | number: '1.0-2') || '-'}}</b>
+                  <!--                  <span class="-related font-size-12">kWh</span>-->
+                </div>
+                <span class="label white  bg-blue-800  flat absolute  left right bottom">
+                  Since start
+                </span>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="widget shadow card">
+            <div class="widget-content padding-10 bg-green-700 height-100 text-center relative">
+              <div class="white">
+                <div class="counter-label margin-bottom-5   clearfix">
+                  <span class="font-size-14 ">
+                    Energy Consumed
+                  </span>
+
+                </div>
+                <div class="">
+                  <span class="counter-icon margin-right-5 ">
+                    <i> <img src="/assets/images/iop/icon-unit.png" alt="img" height="30"> </i>
+                  </span>
+                  <b class="font-size-24">{{(todayStats.energy_consumed | number: '1.0-2') || '-'}}</b>
+                  <span class="-related font-size-12">kWh</span>
+                </div>
+                <span class="label white  bg-green-800  flat absolute  left right bottom">
+                  Today
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div class="widget shadow card">
+            <div class="widget-content padding-10 bg-orange-700 height-100 text-center relative">
+              <div class="white">
+                <div class="counter-label margin-bottom-5 clearfix">
+                  <span class="font-size-14 ">
+                    Number of Events
+                  </span>
+                </div>
+                <div class="">
+                  <span class="counter-icon margin-right-5 ">
+                    <i> <img src="/assets/images/iop/icon-hours.png" alt="img" height="30"> </i>
+                  </span>
+                  <b class="font-size-20"> {{todayStats.events_created}} </b>
+                  <span class="-related font-size-12"></span>
+                </div>
+                <span class="label white  bg-orange-800  flat absolute  left right bottom">
+                  Today
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-3">
+          <div (click)="activeTab=2" class="widget shadow card">
+            <div class="widget-content padding-10 bg-red-700 height-100 text-center pointer relative">
+              <div class="white">
+                <div class="counter-label margin-bottom-5 clearfix">
+                  <span class="font-size-14 ">
+                    Error/s Count
+                  </span>
+                </div>
+                <div class="">
+                  <span class="counter-icon margin-right-5 ">
+                    <i> <img src="/assets/images/iop/icon-errors.png" alt="img" height="30"> </i>
+                  </span>
+                  <b class=" font-size-20"> {{todayStats.err_data | getNullOrUndefined}} </b>
+
+                </div>
+                <span class="label white  bg-red-800  flat absolute  left right bottom">
+                  Today
+                </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-lg-7">
+          <div class="panel panel-default nav-tabs-horizontal padding-0  margin-bottom-30">
+            <div class="panel-heading font-weight-600">
+              <ul class="nav nav-tabs nav-tabs-line  " data-plugin="nav-tabs" role="tablist">
+                <li style="font-size: 10px" [ngClass]="{'active': activeTab === 1}" (click)="activeTab = 1">
+                  <a style="font-size: 12px;" data-toggle="tab" href="#usageStats" role="tab" class=" ">Avg Energy
+                  </a>
+                </li>
+                <li [ngClass]="{'active': activeTab === 2}" (click)="activeTab = 2"><a style="font-size: 12px;"
+                    data-toggle="tab" href="#Errors" role="tab" class=" ">Retained Errors
+                    <span class="badge badge-danger"> {{errorLogs.length}}</span></a></li>
+                <li [ngClass]="{'active': activeTab === 3}" (click)="activeTab = 3"><a style="font-size: 12px;"
+                    data-toggle="tab" href="#current_errors" role="tab" class=" ">Current Errors
+                    <span class="badge badge-danger"> {{signalRerrorLogs.length}}</span></a></li>
+                <li [ngClass]="{'active': activeTab === 4}" (click)="activeTab = 4"><a style="font-size: 12px;"
+                    data-toggle="tab" href="#usersList" role="tab" class=" ">Users</a></li>
+              </ul>
+              <div class="panel-actions" *ngIf="activeTab < 3">
+                <a class="panel-action icon ion-loop" data-toggle="tooltip" [pTooltip]="'Refresh'" tooltipPosition="top"
+                  (click)="refreshCalls()"></a>
+              </div>
+
+            </div>
+
+            <div class="panel-body padding-0">
+              <div class="tab-content">
+
+                <div class="tab-pane" id="usageStats" role="tabpanel" [ngClass]="{'active': activeTab === 1}">
+                  <div class="panel-body padding-0">
+                    <div class="bg-green-100 padding-10">
+                      <div class="padding-10  bg-white  margin-bottom-0 ">
+                        <div class="table-responsive vscroll1">
+                          <table class="table  table-condensed  no-border  margin-bottom-0 font-size-16">
+                            <tbody>
+                              <tr>
+                                <td width="">
+                                  <div class="font-size-24  font-weight-600 red-800">
+                                    {{(usageStats.this_day_average | number: '1.0-2') || '-'}}
+                                    kWh
+                                  </div>
+                                  <div class="font-size-12 font-weight-600"> Today</div>
+                                  <div class="font-size-14 margin-top-0">
+                                    <span class="">{{(usageStats.this_day_percentage | absolute | number: '2.0-2') ||
+                                      0}}
+                                      %</span>
+                                    <span class="">{{usageStats.this_day_percentage < 0 ? 'less' : 'more' }} than
+                                        yesterday</span>
+                                  </div>
+                                </td>
+                                <td class="text-center">
+                                  <div class="margin-top-10 bg-green-100 padding-5 font-size-30 red-800">
+                                    <i
+                                      [class]="usageStats.this_day_percentage < 0 ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                                    <!--<img src="images/arrow-down.png" alt="img" height="30" class="inline">-->
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="">
+                                  <div class="font-size-24  font-weight-600 red-800">
+                                    {{(usageStats.this_week_average | number: '1.0-2') || '-'}}
+                                    kWh
+                                  </div>
+                                  <div class="font-size-12 font-weight-600">This Week</div>
+                                  <div class="font-size-14 margin-top-0">
+                                    <span class="">{{(usageStats.this_week_percentage | absolute | number: '2.0-2') ||
+                                      0}}
+                                      %</span>
+                                    <span class="">{{usageStats.this_week_percentage < 0 ? 'less' : 'more' }} than last
+                                        week</span>
+                                  </div>
+                                </td>
+                                <td class="text-center">
+                                  <div class="margin-top-10 bg-green-100 padding-5 font-size-30 red-800">
+                                    <i
+                                      [class]="usageStats.this_week_percentage < 0 ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                                    <!--<img src="images/arrow-down.png" alt="img" height="30" class="inline">-->
+                                  </div>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td width="">
+                                  <div class="font-size-24 orange-800 font-weight-600 ">
+                                    {{(usageStats.this_month_average | number: '1.0-2') || '-'}}
+                                    kWh
+                                  </div>
+                                  <div class="font-size-12 font-weight-600">This Month</div>
+                                  <div class="font-size-14 margin-top-0">
+                                    <span class="">{{(usageStats.this_month_percentage | absolute | number: '2.0-2') ||
+                                      0}}
+                                      %</span>
+                                    <span class="">{{usageStats.this_month_percentage < 0 ? 'less' : 'more' }} than last
+                                        month</span>
+                                  </div>
+                                </td>
+                                <td class="text-center">
+                                  <div class="margin-top-10 bg-green-100 padding-5 font-size-30 orange-800">
+                                    <i
+                                      [class]="usageStats.this_month_percentage < 0 ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                                    <!--<img src="images/arrow-down.png" alt="img" height="30" class="inline">-->
+                                  </div>
+                                </td>
+                              </tr>
+                              <!--                            <tr>-->
+                              <!--                              <td width="">-->
+                              <!--                                <div-->
+                              <!--                                  class="font-size-24 orange-800 font-weight-600 "> {{(usageStats.this_year_average | number: '1.0-2') || '-'}}-->
+                              <!--                                  kWh-->
+                              <!--                                </div>-->
+                              <!--                                <div class="font-size-12 font-weight-600"> Month</div>-->
+                              <!--                                <div class="font-size-14 margin-top-0">-->
+                              <!--                                  <span class="">{{(usageStats.this_year_percentage| number: '2.0-2') || 0}}%</span>-->
+                              <!--                                  <span class="">{{usageStats.this_year_percentage < 0 ? 'less' : 'more'}} than last month</span>-->
+                              <!--                                </div>-->
+                              <!--                              </td>-->
+                              <!--                              <td class="text-center">-->
+                              <!--                                <div class="margin-top-10 bg-green-100 padding-5 font-size-30 orange-800">-->
+                              <!--                                  <i-->
+                              <!--                                    [class]="usageStats.this_year_percentage < 0 ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>-->
+                              <!--                                </div>-->
+                              <!--                              </td>-->
+                              <!--                            </tr>-->
+
+
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                      <!--                      <app-spin-loading [appLoader]="usageCardLoader"></app-spin-loading>-->
+                    </div>
+                  </div>
+
+                </div>
+                <div class="tab-pane " id="Errors" role="tabpanel" [ngClass]="{'active': activeTab === 2}">
+                  <div class="panel-body padding-0">
+
+                    <div class="bg-green-100 padding-10">
+                      <div class="vscroll bg-white" style="min-height: 265px;max-height: 265px;">
+                        <table class="table table-striped margin-bottom-0 " *ngIf="errorLogs.length;else notFound">
+                          <thead>
+                            <tr>
+                              <th>Error</th>
+                              <th>Timestamp</th>
+                              <th>Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let error of errorLogs">
+                              <td width="80">
+                                <div class="media ">
+                                  <div class="media-left padding-right-10"><a class="" href="javascript:void(0)"><img
+                                        src="/assets/images/iop/icon-error.png" alt="img" height="20" width="20"
+                                        class="inline"></a></div>
+                                  <div class="media-body margin-0"><span class="label label-danger ">
+                                      {{error.errorCount}} </span></div>
+                                </div>
+                              </td>
+                              <td width="150" class="text-left"><b class="small">
+                                  {{error.timestamp | date: 'mediumTime'}}
+                                  - {{error.timestamp | date: 'mediumDate'}}</b></td>
+                              <td>
+                                <div class="">{{error.label || '-'}} </div>
+                              </td>
+                            </tr>
+                        </table>
+                      </div>
+                      <app-spin-loading [appLoader]="errorLoader" [size]="'sm'"></app-spin-loading>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="tab-pane " id="current_errors" role="tabpanel" [ngClass]="{'active': activeTab === 3}">
+                  <div class="panel-body padding-0">
+
+                    <div class="bg-green-100 padding-10">
+                      <div class="vscroll bg-white" style="min-height: 265px;max-height: 265px;">
+                        <table class="table table-striped margin-bottom-0 "
+                          *ngIf="signalRerrorLogs.length;else notFound">
+                          <thead>
+                            <tr>
+                              <th>Error</th>
+                              <th>Timestamp</th>
+                              <th>Description</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+
+                            <tr *ngFor="let error of signalRerrorLogs">
+                              <td width="80">
+                                <div class="media ">
+                                  <div class="media-left padding-right-10"><a class="" href="javascript:void(0)"><img
+                                        src="/assets/images/iop/icon-error.png" alt="img" height="20" width="20"
+                                        class="inline"></a></div>
+                                  <div class="media-body margin-0"><span class="label label-danger ">
+                                      {{error.errorCount}} </span></div>
+                                </div>
+                              </td>
+                              <td width="150" class="text-left"><b class="small">
+                                  {{error.timestamp | date: 'mediumTime'}}
+                                  - {{error.timestamp | date: 'mediumDate'}}</b></td>
+                              <td>
+                                <div class="">{{error.label || '-'}} </div>
+                              </td>
+                            </tr>
+                        </table>
+                      </div>
+                      <!--                      <app-spin-loading [appLoader]="errorLoader" [size]="'sm'"></app-spin-loading>-->
+                    </div>
+
+                  </div>
+                </div>
+                <div class="tab-pane " id="usersList" role="tabpanel" [ngClass]="{'active': activeTab === 4}">
+                  <div class="panel-body padding-0">
+
+                    <div class="bg-green-100 padding-10">
+                      <div class="vscroll padding-right-0 padding-left-0"
+                        style="min-height:265px;max-height:265px;overflow-x: hidden">
+                        <table class="table bg-white table-bordered table-condensed1 table-striped1 margin-bottom-0"
+                          id="table">
+                          <thead>
+                            <tr class="">
+                              <th class="text-left">Name</th>
+                              <th class="text-left">Role</th>
+                              <!--                            <th class="text-left">priv</th>-->
+                              <th class="text-left">View</th>
+                              <th class="text-left">View & Control</th>
+                              <th class="text-left">Turn Off</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let user of deviceUsers">
+                              <td class="text-left">
+                                <div class="media" style="max-width: 110px;overflow-x: hidden;">
+                                  <div class="media-body">
+                                    <a class="font-weight-600">
+                                      {{user['first_name'] + ' ' + user['last_name']}}
+                                    </a>
+                                    <button data-toggle="modal" data-target="#myModal"
+                                      class="btn btn-xs fa fa-info-circle pull-right"
+                                      pTooltip="View Details for this user" (click)="UserClicked(user['user_id'])">
+                                    </button>
+
+                                  </div>
+
+
+                                </div>
+
+
+                              </td>
+                              <td class="text-left"><i class="green-700 inline-block">
+                                  {{user['privileges']['is_admin'] ? 'Owner' : 'User'}}
+                                </i></td>
+
+                              <td class="text-center">
+                                <div class="inline-block margin-right-0">
+                                  <div class="checkbox checkbox-slider--b-flat checkbox-slider-info">
+                                    <label style="padding-left: 2px">
+                                      <input class="disabled" disabled="true"
+                                        [(ngModel)]="user['privileges']['can_read']" type="checkbox" id="checkbox3"
+                                        name="inputRadios" />
+                                      <span for="checkbox3"></span>
+                                    </label>
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <div class="inline-block margin-right-0">
+                                  <div class="checkbox checkbox-slider--b-flat checkbox-slider-info">
+                                    <label style="padding-left: 2px">
+                                      <input class="disabled" disabled="true"
+                                        [(ngModel)]="user['privileges']['can_edit']"
+                                        type="checkbox" id="checkbox4" name="inputRadios" />
+                                      <span for="checkbox4"></span>
+                                    </label>
+                                  </div>
+                                </div>
+                              </td>
+                              <td class="text-center">
+                                <div class="inline-block margin-right-0">
+                                  <div class="checkbox checkbox-slider--b-flat checkbox-slider-info">
+                                    <label style="padding-left: 2px">
+                                      <input class="disabled" disabled="true"
+                                        [(ngModel)]="user['privileges']['can_remove']"
+                                        type="checkbox" id="checkbox5" name="inputRadios" />
+                                      <span for="checkbox5"></span>
+                                    </label>
+                                  </div>
+                                </div>
+
+                                <!--                              <button type="button" class="btn  btn-xs font-size-10" style="margin-top: 15%"-->
+                                <!--                                      [ngClass]="user['privileges']['is_admin']? 'btn-info' : 'btn-default'">-->
+                                <!--                                <i class=""-->
+                                <!--                                   [ngClass]="user['privileges']['is_admin']? 'ion-checkmark' : 'ion-close'"></i>-->
+                                <!--                              </button>-->
+                                <!--                              <span></span>                       -->
+                              </td>
+
+
+                              <!--                            <td>-->
+                              <!--&lt;!&ndash;                              <div class="inline-block margin-right-0">&ndash;&gt;-->
+                              <!--&lt;!&ndash;                                <div class="checkbox checkbox-slider&#45;&#45;b-flat checkbox-slider-info">&ndash;&gt;-->
+                              <!--&lt;!&ndash;                                  <label >&ndash;&gt;-->
+                              <!--                                    <input class="disabled" disabled="true"-->
+                              <!--                                           [(ngModel)]="user['privileges']['can_read']" type="checkbox"-->
+                              <!--                                           id="checkbox3" name="inputRadios"/>-->
+                              <!--&lt;!&ndash;                                  </label>&ndash;&gt;-->
+                              <!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+                              <!--&lt;!&ndash;                              </div>&ndash;&gt;-->
+                              <!--                            </td>-->
+                              <!--                            <td>-->
+                              <!--&lt;!&ndash;                              <div class="inline-block margin-right-0">&ndash;&gt;-->
+                              <!--&lt;!&ndash;                                <div class="checkbox checkbox-slider&#45;&#45;b-flat checkbox-slider-info">&ndash;&gt;-->
+                              <!--&lt;!&ndash;                                  <label style="padding-left: 2px">&ndash;&gt;-->
+                              <!--                                    <input class="disabled" disabled="true" [(ngModel)]="user['privileges']['can_edit'] && user['privileges']['can_remove'] && user['privileges']['can_share']"-->
+                              <!--                                                                                     type="checkbox"  name="inputRadios"/>-->
+                              <!--&lt;!&ndash;                                  </label>&ndash;&gt;-->
+                              <!--&lt;!&ndash;                                </div>&ndash;&gt;-->
+                              <!--&lt;!&ndash;                              </div>&ndash;&gt;-->
+                              <!--                            </td>-->
+                              <!--                            <td>-->
+                              <!--                              <div class="inline-block margin-right-0">-->
+                              <!--                                <div class="checkbox checkbox-slider&#45;&#45;b-flat checkbox-slider-info">-->
+                              <!--                                  <label style="padding-left: 2px">-->
+                              <!--                                    <button type="button" class="btn  btn-xs font-size-10"-->
+                              <!--                                                                                  [ngClass]="user['privileges']['is_admin']? 'btn-info' : 'btn-default'">-->
+                              <!--                                                                            <i class=""-->
+                              <!--                                                                               [ngClass]="user['privileges']['is_admin']? 'ion-checkmark' : 'ion-close'"></i>-->
+                              <!--                                                                          </button>-->
+                              <!--                                  </label>-->
+                              <!--                                </div>-->
+                              <!--                              </div>-->
+                              <!--                            </td>-->
+                            </tr>
+                            <tr *ngIf="deviceUsers.length < 1">
+                              <td colspan="3">
+                                <app-data-not-found></app-data-not-found>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                        <app-spin-loading [appLoader]="dayStatsLoader" [size]="'sm'"></app-spin-loading>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-lg-5">
+          <app-sensors-tab></app-sensors-tab>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Event Created Reporting & Density reporting start -->
+  <div class="row" [hidden]="!displayData">
+    <app-density-reporting [entityId]="entityId" [deviceUsers]="deviceUsers"></app-density-reporting>
+  </div>
+  <!--  Event Created Reporting & Density reporting end -->
+
+  <div class="row" [hidden]="!displayData">
+    <div class="col-lg-12">
+      <div class="panel panel-default ">
+        <div class="panel-heading">
+          <h3 class="panel-title font-weight-600">Statistics</h3>
+        </div>
+
+        <div class="panel-body padding-0">
+          <div class="">
+            <div class="nav-tabs-vertical">
+              <div class="col-lg-3" style="width: 18% !important">
+                <ul class="nav nav-tabs nav-tabs-solid1 " data-plugin="nav-tabs" role="tablist">
+                  <!--margin-right-25-->
+                  <li class="active"><a data-toggle="tab" href="#Energy" role="tab">Energy Consumption</a></li>
+                  <li class=""><a data-toggle="tab" href="#cooling" role="tab">Temperature</a></li>
+                  <li class=""><a data-toggle="tab" href="#Hours" role="tab">Usage Time</a></li>
+                  <li class=""><a data-toggle="tab" href="#density" role="tab">Density Details</a></li>
+                </ul>
+              </div>
+
+              <div class="col-lg-9" style="width: 80% !important">
+                <div class="tab-content" style="overflow: visible !important">
+                  <div class="tab-pane active" id="Energy" role="tabpanel">
+                    <app-energy-consumption-reporting [entityId]="entityId"></app-energy-consumption-reporting>
+                  </div>
+                  <div class="tab-pane " id="cooling" role="tabpanel">
+                    <app-temperature-reporting [entityId]="entityId"></app-temperature-reporting>
+                  </div>
+                  <div class="tab-pane " id="Hours" role="tabpanel">
+                    <app-usage-reporting [entityId]="entityId"></app-usage-reporting>
+                  </div>
+                  <div class="tab-pane" id="density" role="tabpanel">
+                    <div class="row">
+                      <div class="col-g-12">
+                        <app-reporting-buttons [hideCalendar]="true" [type]="'temperature'"
+                          (btnClicked)="getDensityData($event)" [btnsDimension]="'col-lg-4'"></app-reporting-buttons>
+                      </div>
+                    </div>
+                    <div style="margin-top: 20px;" class="">
+                      <p-progressBar *ngIf="densityDataLoader" [style]="{'height': '5px'}" mode="indeterminate">
+                      </p-progressBar>
+
+                      <ngx-datatable class="material defaultCursor" [columnMode]="'force'" [headerHeight]="50"
+                        [footerHeight]="50" [footerHeight]="50" [limit]="10" [rows]="densityData" [rowHeight]="'auto'">
+
+                        <ngx-datatable-column name="Created By" prop="modified_by__first_name">
+                          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <span class="pointer">
+                              <a> {{(value) || '-'}} </a>
+                            </span>
+                          </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Created On" prop="created_datetime">
+                          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <span>
+                              {{(value) | date : 'medium'}}
+                            </span>
+                          </ng-template>
+                        </ngx-datatable-column>
+
+                        <ngx-datatable-column name="Event Start Time" prop="new_start_dt">
+                          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <span>
+                              {{(value) | date : 'medium'}}
+                            </span>
+                          </ng-template>
+                        </ngx-datatable-column>
+
+                        <!-- <ngx-datatable-column name="Start Date" prop="start_date">
+                      <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                        <span>
+                          {{(value)}}
+                        </span>
+                      </ng-template>
+                    </ngx-datatable-column> -->
+
+                        <ngx-datatable-column name="Event Category" prop="activity_type_id">
+                          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <span class="pointer">
+                              {{( IoPScheduleType[value] || '-')}}
+                            </span>
+                          </ng-template>
+                        </ngx-datatable-column>
+                        <ngx-datatable-column name="Event Duration (mins)" prop="notes">
+                          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                            <span class="pointer">
+                              {{(value || '-')}}
+                            </span>
+                          </ng-template>
+                        </ngx-datatable-column>
+                      </ngx-datatable>
+
+                    </div>
+
+
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #errorTemplate>
+  <div *ngIf="errorLoader? !errorLoader.visibility : true" class="text-muted margin-top-30 margin-left-10 "
+    style="color: #A9A9A4;">
+    There is something wrong.
+  </div>
+</ng-template>
+
+<ng-template #notFound>
+  <div>
+    <app-data-not-found></app-data-not-found>
+  </div>
+</ng-template>
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div style="background-color: darkred;" class="modal-header">
+        <button style="color: white;" type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 style="color: white;" class="modal-title">User Device Details</h4>
+      </div>
+      <div style="max-height:500px; overflow-y: auto" class="modal-body">
+        <!--       <p>{{user_android_info}}</p>-->
+        <pre *ngIf="user_android_info == 'null'">Device inforFtion has not been logged yet.</pre>
+        <!--        <pre *ngIf="user_android_info != 'null'">{{user_android_info|json}}</pre>-->
+        <table *ngIf="user_android_info != 'null'" id="customers">
+          <thead>
+            <tr>
+              <th>
+                Key
+              </th>
+              <th>
+                Value
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                Board
+              </td>
+              <td>
+                {{user_android_info['Board']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Bootloader
+              </td>
+              <td>
+                {{user_android_info['Bootloader']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Brand
+              </td>
+              <td>
+                {{user_android_info['Brand']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Build ID
+              </td>
+              <td>
+                {{user_android_info['Build_ID']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                CPU ABI
+              </td>
+              <td>
+                {{user_android_info['CPU_ABI']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Device
+              </td>
+              <td>
+                {{user_android_info['Device']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Display
+              </td>
+              <td>
+                {{user_android_info['Display']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Hardware
+              </td>
+              <td>
+                {{user_android_info['Hardware']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Host
+              </td>
+              <td>
+                {{user_android_info['Host']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Manufacturer
+              </td>
+              <td>
+                {{user_android_info['Manufacturer']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Model
+              </td>
+              <td>
+                {{user_android_info['Model']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                OS API evel
+              </td>
+              <td>
+                {{user_android_info['OS_API_Level']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                OS Version
+              </td>
+              <td>
+                {{user_android_info['OS_Version']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                OS Version Incremental
+              </td>
+              <td>
+                {{user_android_info['OS_Version_Incremental']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Product
+              </td>
+              <td>
+                {{user_android_info['Product']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Radio Version
+              </td>
+              <td>
+                {{user_android_info['Radio_Version']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Release
+              </td>
+              <td>
+                {{user_android_info['Release']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                User
+              </td>
+              <td>
+                {{user_android_info['User']}}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Serial Number
+              </td>
+              <td>
+                {{user_android_info['serial_number']}}
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+        <!--        <p style=" font-weight: bold;">Cryptids of Cornwall:</p>-->
+
+        <!--        <dl>-->
+        <!--          <dd>A large feline inhabiting Bodmin Moor.</dd>-->
+
+        <!--          <dt>Morgawr</dt>-->
+        <!--          <dd>A sea serpent.</dd>-->
+
+        <!--          <dt>Owlman</dt>-->
+        <!--          <dd>A giant owl-like creature.</dd>-->
+        <!--        </dl>-->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

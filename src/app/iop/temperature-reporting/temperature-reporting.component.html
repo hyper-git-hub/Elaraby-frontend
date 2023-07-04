@@ -1,0 +1,19 @@
+<div class="margin-bottom-10  row">
+  <app-reporting-buttons [search]="false" [type]="'temperature'" (btnClicked)="getReport($event)"
+    [btnsDimension]="'col-lg-4'" [calendarDimension]="'col-sm-4'"></app-reporting-buttons>
+</div>
+<div class="col-lg-12">
+  <div class="chartbox">
+    <div>
+      <app-linechart *ngIf="temperatureBarChartReady;else notFound" [chartHeight]="'280px'" [showGridLines]="true"
+        [axislabels]="temperatureAxisLabel" [lineChartData]="lineChartData" [lineChartLabels]="lineChartLabels">
+      </app-linechart>
+      <app-spin-loading [appLoader]="temperatureAppLoader" [size]="'sm'"></app-spin-loading>
+    </div>
+  </div>
+</div>
+<ng-template #notFound>
+  <div>
+    <app-data-not-found></app-data-not-found>
+  </div>
+</ng-template>

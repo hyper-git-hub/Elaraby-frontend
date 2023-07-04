@@ -1,0 +1,58 @@
+<!--<ngx-loading-bar-->
+<!--  color="#fff"-->
+<!--  [includeSpinner]="false"-->
+<!--  [includeBar]="true">-->
+<!--</ngx-loading-bar>-->
+<div class="login-bg">
+  <div
+    style="background-image: url(../../../assets/images/bg-login.jpg);  background-size:cover; height:100%; z-index: -1; "
+    class="pic"></div>
+  <div class="vertical-align text-center">
+
+    <div class="page-content vertical-align-middle white form-box" style="width:300px; margin:auto;">
+      <div class="brand margin-bottom-50" style="margin-bottom:40px;">
+        <img class="brand-img" src="../../../assets/images/hypernet-logo2.png" alt="..." height="200">
+
+      </div>
+      <!--Forgot Password Section-->
+      <div #formModal class="modal fade  modal-success text-left" id="forgotPassword"
+           role="dialog" tabindex="-1">
+        <div class="modal-dialog modal-center  modal-xs">
+          <div class="modal-content">
+            <div class="modal-body">
+              <form id="forgotPasswordID" [formGroup]="forgotPasswordForm" (ngSubmit)="onSubmitForgotPassword()">
+                <div class="form-group">
+                  <label class="control-label grey-800">Enter your email</label>
+                  <input type="email" formControlName="currentEmail" class="form-control"/>
+                </div>
+
+                <div class="alert alert-danger" *ngFor="let e of errorMessages">{{e}}</div>
+
+              </form>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" #closeForgotPasswordForm class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" form="forgotPasswordID" class="btn btn-primary"
+                      [disabled]="forgotPasswordForm.invalid">Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--Forgot Password Section-->
+
+      <app-login-form></app-login-form>
+
+      <button type="button" class="btn btn-link pull-right" data-target="#forgotPassword" data-toggle="modal">Forgot
+        Password
+      </button>
+
+      <!--<p class="margin-top-50">Still no account? Please go to <a href="">Register</a></p>-->
+
+      <footer class="page-copyright" style="margin-top:20px; color:lightslategrey">
+        <p>© {{year}} Hypernet</p>
+      </footer>
+    </div>
+  </div>
+</div>

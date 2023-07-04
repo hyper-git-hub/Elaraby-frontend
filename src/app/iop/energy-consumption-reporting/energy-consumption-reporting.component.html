@@ -1,0 +1,27 @@
+<div class="margin-bottom-10  row">
+  <div class="col-lg-6">
+    <h5>Saving percentage: {{saving_factor | number: '0.2-2'}}% </h5>
+  </div>
+  <app-reporting-buttons [hideCalendar]="true" [hideBtn]="'yesterday'" [search]="false" [type]="'energy'"
+    (btnClicked)="getReport($event)" [btnsDimension]="'col-lg-4'" [calendarDimension]="'col-sm-3'">
+  </app-reporting-buttons>
+</div>
+<div class="col-lg-12">
+
+
+  <div class="chartbox">
+    <div style="display: block;height: 250px;">
+      <div style="display: block;height: 250px;">
+        <app-linechart *ngIf="energyBarChartReady;else notFound" [showGridLines]="true"
+          [lineChartData]="energyChartData" [chartHeight]="'250px'" [lineChartLabels]="energyChartLabel"
+          [lineChartColors]="lineChartColors" [axislabels]="energyAxisLabels"></app-linechart>
+        <app-spin-loading [appLoader]="energyAppLoader" [size]="'sm'"></app-spin-loading>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #notFound>
+  <div>
+    <app-data-not-found></app-data-not-found>
+  </div>
+</ng-template>

@@ -1,0 +1,643 @@
+<app-breadcrumbs [items]="items" [home]="home"></app-breadcrumbs>
+<div class="page-content  container-fluid">
+  <!--<button (click)="testError()">test errro</button>-->
+
+  <div class="row">
+    <div class="col-lg-4">
+      <div class="row no-space1">
+        <div class="col-md-12">
+          <div class="widget shadow card">
+            <div class="widget-content padding-10 bg-orange-800 height-100 text-center relative ">
+              <div class="white">
+                <div class="counter-label margin-bottom-10   clearfix">
+                  <span class="font-size-14 ">
+                    Total Water Heaters
+                  </span>
+                </div>
+                <div class="">
+                  <span class="counter-icon margin-right-15 ">
+                    <i> <img src="/assets/images/iop/icon-water-heater.png" alt="img" height="40"> </i>
+                  </span>
+                  <b class="font-size-24" style="position:relative; top:5px;">{{summary.totalHeaters || 0}}</b>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="widget shadow card">
+            <div
+              class="widget-content padding-top-0 pa bg-green-700 vertical-align height-90 white  text-center relative ">
+              <div class="vertical-align-middle">
+                <div class="counter-label margin-bottom-0 clearfix">
+                  <span class="font-size-14 ">Online</span>
+                </div>
+                <b class="font-size-16">{{summary.onlineHeaters}}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="widget shadow card">
+            <div
+              class="widget-content padding-top-0 pa bg-grey-600 vertical-align height-90 white  text-center relative ">
+              <div class="vertical-align-middle">
+                <div class="counter-label margin-bottom-0 clearfix">
+                  <span class="font-size-14 ">Offline</span>
+                </div>
+                <b class="font-size-16">{{summary.offlineHeaters}}</b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="widget  margin-bottom-30 shadow card">
+        <div class="widget-content  padding-15 bg-red-700 " style="height:220px;">
+          <div class="counter counter-md counter-inverse text-center padding-top-0">
+            <app-spin-loading [appLoader]="mostErrorLoader" [size]="'sm'"></app-spin-loading>
+
+            <div class="">
+              <div class="text-uppercase  font-size-14 margin-bottom-10"><b> Most Error <br /> Occurring</b></div>
+              <div class="dropdown">
+                <p-dropdown id="heaterdropdown1" class="material-dropdown"
+                  panelStyleClass="'dropdown-menu font-size-10 text-center" [options]="filter"
+                  [(ngModel)]="selectedError" (onChange)="errorDropdownChanged($event)"></p-dropdown>
+              </div>
+              <div class="font-size-20 margin-top-10 margin-bottom-5 font-weight-600">
+                {{mostErrorDevice.error_prone_device || '-'}}</div>
+
+              <div class="font-size-14 margin-bottom-30 margin-top-5">
+                {{mostErrorDevice.error_prone_device_errors | getNullOrUndefined}}
+                Errors
+              </div>
+              <div class="font-size-10 margin-top-10">
+                <span class="margin-right-5"><i class="ion-arrow-graph-up-right"></i></span>
+                <span class="">{{(mostErrorDevice['percentage_diff'] | number : '1.0-0')}}%</span>
+                <span class="">{{ mostErrorDevice['percentage_diff_status'] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-2">
+      <div class="widget  margin-bottom-30 shadow card">
+        <div class="widget-content  padding-15 bg-teal-700 " style="height:220px;">
+          <div class="counter counter-md counter-inverse text-center padding-top-0">
+            <app-spin-loading [appLoader]="mostSoldLoader" [size]="'sm'"></app-spin-loading>
+
+            <div class="">
+              <div class="text-uppercase  font-size-14 margin-bottom-10"><b> Most Sold <br> Model </b></div>
+              <div class="dropdown">
+                <p-dropdown id="heaterdropdown2" class="material-dropdown"
+                  panelStyleClass="'dropdown-menu font-size-10 text-center" [options]="filter"
+                  [(ngModel)]="selectedSold" (onChange)="mostSoldModel($event)"></p-dropdown>
+              </div>
+              <div class="font-size-20 margin-top-10 margin-bottom-5 font-weight-600">
+                {{mostSoldDevice.most_sold_model || '-'}}</div>
+
+              <div class="font-size-14  margin-bottom-30 margin-top-5">
+                {{mostSoldDevice.sold_model_count | getNullOrUndefined}}
+                Units
+              </div>
+              <div class="font-size-10 margin-top-10">
+                <span class="margin-right-5">
+                  <i
+                    [class]="mostSoldDevice['percentage_diff']  <= 0 ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                </span>
+                <span class="">{{(mostSoldDevice['percentage_diff'] | number: '2.0-2')}}%</span>
+                <span class="">{{ mostSoldDevice['percentage_diff_status'] }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="widget  margin-bottom-30 shadow card">
+        <div class="widget-content padding-15   bg-green-700 " style="height:220px;">
+          <div class="counter counter-md counter-inverse text-center padding-top-0">
+            <app-spin-loading [appLoader]="avgUsageLoader" [size]="'sm'"></app-spin-loading>
+            <div class=" ">
+              <div class=" ">
+                <div class="text-uppercase  font-size-14 margin-bottom-10 font-weight-600"> Average <br /> Usage
+                </div>
+                <div class="dropdown">
+                  <p-dropdown id="heaterdropdown3" class="material-dropdown"
+                    panelStyleClass="'dropdown-menu font-size-10 text-center" [options]="filter"
+                    [(ngModel)]="selectedUsage" (onChange)="usageDropdownChanged($event)"></p-dropdown>
+                </div>
+              </div>
+
+              <div class="font-size-30 margin-top-30 margin-bottom-0">
+                <i> <img src="/assets/images/iop/icon-hours.png" alt="img" height="40" class="">
+                </i> {{(avgUsageDevice.current_value || 0) | number: '1.0-0'}} <span class="font-size-12"> hours</span>
+                <!--                </i> {{(avgUsageDevice.current_value || 0)}}-->
+                <!--                <span class="font-size-12">Hours</span>-->
+              </div>
+              <div class="font-size-10 margin-top-20">
+                <span class="margin-right-5">
+                  <i
+                    [class]="avgUsageDevice['percentage_diff']  <= 0 ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                </span>
+                <span class="">{{(avgUsageDevice['percentage_diff'] | number: '2.0-2')}}%</span>
+                <span class="">{{ avgUsageDevice['percentage_diff_status'] }}</span>
+              </div>
+            </div>
+
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+      <div class="widget  margin-bottom-30 shadow card">
+        <div class="widget-content   bg-blue-700  padding-15  " style="height:220px;">
+
+          <div class="counter counter-md counter-inverse text-center padding-top-0">
+            <app-spin-loading [appLoader]="avgErrorLoader" [size]="'sm'"></app-spin-loading>
+
+            <div class=" ">
+              <div class=" ">
+                <div class="text-uppercase  font-size-14 margin-bottom-10 font-weight-600"> Average <br /> Errors
+                </div>
+                <div class="dropdown">
+                  <p-dropdown id="heaterdropdown4" class="material-dropdown"
+                    panelStyleClass="'dropdown-menu font-size-10 text-center" [options]="filter"
+                    [(ngModel)]="selectedErrorsAll" (onChange)="avrageErrorsDropdownChanged($event)"></p-dropdown>
+                </div>
+              </div>
+
+
+              <div class="font-size-30 margin-top-30 margin-bottom-0">
+                <i> <img src="/assets/images/iop/icon-errors.png" alt="img" height="40" class="">
+                </i> {{(avgErrors.this_date || 0) | number: '1.0-0'}}<span class="font-size-12"> Errors</span>
+              </div>
+              <div class="font-size-10 margin-top-20">
+                <span class="margin-right-5">
+                  <i
+                    [class]="avgErrors['percentage_diff']  <= 0 ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                </span>
+                <span class="">{{(avgErrors['percentage_diff'] | number: '2.0-2')}}%</span>
+                <span class="">{{ avgErrors['percentage_diff_status'] }}</span>
+              </div>
+            </div>
+
+
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="panel panel-default nav-tabs-horizontal padding-0 margin-bottom-0">
+        <div class="panel-heading font-weight-600">
+          <ul class="nav nav-tabs nav-tabs-line" data-plugin="nav-tabs">
+            <!--                <li class="active"><a data-toggle="tab" href="#listing" aria-expanded="true">Listing </a></li>-->
+            <!-- <li class=""><a data-toggle="tab" href="#Unit">Statistics</a></li> -->
+            <li class="active"><a data-toggle="tab" href="#Map">Location</a></li>
+          </ul>
+        </div>
+        <div class="panel-body padding-0">
+          <div class="tab-content ">
+            <!--                <div class="tab-pane active" id="listing" role="tabpanel">-->
+
+            <!--                </div>-->
+            <div class="tab-pane" id="Unit" role="tabpanel">
+              <div class="margin-bottom-10 row">
+                <app-reporting-buttons [selected]="'today'" [type]="'custom'" (btnClicked)="false;"
+                  [btnsDimension]="'col-lg-5'" [calendarDimension]="'col-sm-5'" [buttonGroupSize]="'btn-group-sm'"
+                  [buttonGroupColor]="'btn-success'"></app-reporting-buttons>
+
+              </div>
+              <div class="row">
+                <div class="chartbox col-lg-12" style="min-height: 250px">
+                  <app-data-not-found></app-data-not-found>
+                  <app-spin-loading [appLoader]="statisticsLoader"></app-spin-loading>
+                </div>
+                <!--<app-bar-chart [showGridLines]="true" [legendsObj]="{display: true, position: 'bottom', labels: {boxWidth: 10}}" [barChartData]="barChartData"  [chartHeight]="'250px'" [barChartLabels]="barChartLabels" [axislabels]="{'x': 'Devices', 'y': 'Stats'}"></app-bar-chart>-->
+              </div>
+            </div>
+            <div class="tab-pane active" id="Map" role="tabpanel">
+              <app-map-overlay [msg]="'No Data to Display'" [visibility]="!markers.length">
+              </app-map-overlay>
+
+              <div class="container">
+                <agm-map #AgmMap [style.height]="'307px'" [latitude]="latitude" [longitude]="longitude">
+                  <agm-marker-cluster imagePath="../../../assets/images/clustering/m">
+                    <agm-marker *ngFor="let marker of markers" [latitude]="marker.lat" [longitude]="marker.lng"
+                      [iconUrl]="icon" (mouseOver)="onMouseOver(infoWindow,AgmMap)"
+                      (mouseOut)="onMouseOut(infoWindow, AgmMap)">
+                      <agm-info-window #infoWindow [isOpen]="false">{{marker.device_name}}
+                      </agm-info-window>
+                    </agm-marker>
+                  </agm-marker-cluster>
+                </agm-map>
+              </div>
+
+              <!-- <app-google-map [height]="'300px'" [center]="{lat:30.045791, lng: 31.238199}"
+                              [zoom_level]="10"></app-google-map> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-5  ">
+      <div class="panel panel-default nav-tabs-horizontal padding-0 margin-bottom-0">
+        <div class="panel-heading font-weight-600">
+          <ul class="nav nav-tabs nav-tabs-line" data-plugin="nav-tabs">
+            <!--                <li class="active"><a data-toggle="tab" href="#listing" aria-expanded="true">Listing </a></li>-->
+            <li class="active"><a data-toggle="tab" href="#errors">
+                <b> Retained Errors <span class="badge badge-danger">{{errorLogs.length}}</span> </b> </a></li>
+            <li class=""><a data-toggle="tab" href="#current_errors">
+                <b> Current Errors <span class="badge badge-danger">{{signalRerrorLogs.length}}</span> </b></a></li>
+          </ul>
+        </div>
+        <div class="panel-body padding-0">
+          <div class="tab-content ">
+            <!--                <div class="tab-pane active" id="listing" role="tabpanel">-->
+
+            <!--                </div>-->
+            <div class="tab-pane active" id="errors" role="tabpanel">
+              <div class="vscroll " style="max-height:307px;">
+                <app-data-not-found *ngIf="!errorLogs.length"></app-data-not-found>
+                <table class="table table-striped margin-bottom-0  ">
+                  <thead *ngIf="errorLogs.length">
+                    <tr>
+                      <th>Device</th>
+                      <th>Model</th>
+                      <th>Timestamp</th>
+                      <th>Error Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let error of errorLogs">
+                      <td width="80" [routerLink]="gotoPage.gotoHeater(error.device_id)">
+                        <div class="media ">
+                          <div class="media-left padding-right-10">
+                            <span class="text-danger"> {{error.modal}} </span>
+                            <!--                            <a class="" href="javascript:void(0)"><img src="/assets/images/iop/icon-error.png" alt="img" height="20" width="20" class="inline"></a>-->
+                          </div>
+                          <div class="media-body margin-0">
+                            <span class="pointer "> {{error.device}} </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="label label-danger"> {{error.model}} </span></td>
+                      <td width="110" class="text-left"><b class="small"> {{error.timestamp | date: 'mediumTime'}}
+                          - {{error.timestamp | date: 'mediumDate'}}</b></td>
+                      <!--                      <td width="60"  > <b class="">{{error.model}}</b>   </td>-->
+                      <td>
+                        <div class="">{{error.label}} </div>
+                      </td>
+                    </tr>
+                </table>
+                <app-spin-loading [appLoader]="errorLoader" [size]="'sm'"></app-spin-loading>
+              </div>
+            </div>
+            <div class="tab-pane" id="current_errors" role="tabpanel">
+              <div class="vscroll " style="max-height:307px;">
+                <app-data-not-found *ngIf="!signalRerrorLogs?.length"></app-data-not-found>
+                <table class="table table-striped margin-bottom-0  ">
+                  <thead *ngIf="signalRerrorLogs.length">
+                    <tr>
+                      <th>Device</th>
+                      <th>Model</th>
+                      <th>Timestamp</th>
+                      <th>Error Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let error of signalRerrorLogs">
+                      <td width="80" [routerLink]="gotoPage.gotoHeater(error.device_id)">
+                        <div class="media ">
+                          <div class="media-left padding-right-10">
+                            <span class="text-danger"> {{error.modal}} </span>
+                            <!--                            <a class="" href="javascript:void(0)"><img src="/assets/images/iop/icon-error.png" alt="img" height="20" width="20" class="inline"></a>-->
+                          </div>
+                          <div class="media-body margin-0">
+                            <span class="pointer "> {{error.device}} </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span class="label label-danger"> {{error.model}} </span></td>
+                      <td width="110" class="text-left"><b class="small"> {{error.timestamp | date: 'mediumTime'}}
+                          - {{error.timestamp | date: 'mediumDate'}}</b></td>
+                      <td>
+                        <div class="">{{error.label}} </div>
+                      </td>
+                    </tr>
+                </table>
+                <app-spin-loading [appLoader]="errorLoader" [size]="'sm'"></app-spin-loading>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    <div class="col-lg-5">-->
+    <!--      <div class="panel panel-default     ">-->
+    <!--        <div class="panel-heading ">-->
+    <!--          <ul class="nav nav-tabs nav-tabs-line" data-plugin="nav-tabs">-->
+    <!--            <li class="active"><a data-toggle="tab" href="#errors">Errors</a></li>-->
+    <!--            <li ><a data-toggle="tab" href="#current_errors">Current Errors</a></li>-->
+    <!--          </ul>-->
+    <!--&lt;!&ndash;          <div class="panel-actions ">&ndash;&gt;-->
+
+    <!--&lt;!&ndash;            <a class="panel-action icon ion-loop " data-toggle="tooltip" data-original-title="Refresh"&ndash;&gt;-->
+    <!--&lt;!&ndash;              (click)="getErrorLogs()"></a>&ndash;&gt;-->
+    <!--&lt;!&ndash;          </div>&ndash;&gt;-->
+    <!--&lt;!&ndash;          <h3 class="panel-title "><b> Errors Log <span class="badge badge-danger">{{errorLogs.length}}</span></b>&ndash;&gt;-->
+    <!--&lt;!&ndash;          </h3>&ndash;&gt;-->
+    <!--        </div>-->
+    <!--        <div class="panel-body padding-0 ">-->
+    <!--          <div class="" id="errors">-->
+    <!--            <div class="vscroll " style="max-height:307px;">-->
+    <!--              <app-data-not-found *ngIf="!errorLogs.length"></app-data-not-found>-->
+    <!--              <table class="table table-striped margin-bottom-0  ">-->
+    <!--                <thead *ngIf="errorLogs.length">-->
+    <!--                  <tr>-->
+    <!--                    <th>Device</th>-->
+    <!--                    <th>Model</th>-->
+    <!--                    <th>Timestamp</th>-->
+    <!--                    <th>Error Description</th>-->
+    <!--                  </tr>-->
+    <!--                </thead>-->
+    <!--                <tbody>-->
+    <!--                  <tr *ngFor="let error of errorLogs">-->
+    <!--                    <td width="80" [routerLink]="gotoPage.gotoHeater(error.device_id)">-->
+    <!--                      <div class="media ">-->
+    <!--                        <div class="media-left padding-right-10">-->
+    <!--                          <span class="text-danger"> {{error.modal}} </span>-->
+    <!--                          &lt;!&ndash;                            <a class="" href="javascript:void(0)"><img src="/assets/images/iop/icon-error.png" alt="img" height="20" width="20" class="inline"></a>&ndash;&gt;-->
+    <!--                        </div>-->
+    <!--                        <div class="media-body margin-0">-->
+    <!--                          <span class="pointer "> {{error.device}} </span>-->
+    <!--                        </div>-->
+    <!--                      </div>-->
+    <!--                    </td>-->
+    <!--                    <td><span class="label label-danger"> {{error.model}} </span></td>-->
+    <!--                    <td width="110" class="text-left"><b class="small"> {{error.timestamp | date: 'mediumTime'}}-->
+    <!--                        - {{error.timestamp |  date: 'mediumDate'}}</b></td>-->
+    <!--                    &lt;!&ndash;                      <td width="60"  > <b class="">{{error.model}}</b>   </td>&ndash;&gt;-->
+    <!--                    <td>-->
+    <!--                      <div class="">{{error.label}} </div>-->
+    <!--                    </td>-->
+    <!--                  </tr>-->
+    <!--              </table>-->
+    <!--              <app-spin-loading [appLoader]="errorLoader" [size]="'sm'"></app-spin-loading>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--          <div class="" id="current_errors">-->
+    <!--            <p>jhsdgshfg</p>-->
+    <!--            <div class="vscroll " style="max-height:307px;">-->
+    <!--              <app-data-not-found *ngIf="!signalRerrorLogs?.length"></app-data-not-found>-->
+    <!--              <table class="table table-striped margin-bottom-0  ">-->
+    <!--                <thead *ngIf="signalRerrorLogs.length">-->
+    <!--                <tr>-->
+    <!--                  <th>Device</th>-->
+    <!--                  <th>Model</th>-->
+    <!--                  <th>Timestamp</th>-->
+    <!--                  <th>Error Description</th>-->
+    <!--                </tr>-->
+    <!--                </thead>-->
+    <!--                <tbody>-->
+    <!--                <tr *ngFor="let error of signalRerrorLogs">-->
+    <!--                  <td width="80" [routerLink]="gotoPage.gotoHeater(error.device_id)">-->
+    <!--                    <div class="media ">-->
+    <!--                      <div class="media-left padding-right-10">-->
+    <!--                        <span class="text-danger"> {{error.modal}} </span>-->
+    <!--                        &lt;!&ndash;                            <a class="" href="javascript:void(0)"><img src="/assets/images/iop/icon-error.png" alt="img" height="20" width="20" class="inline"></a>&ndash;&gt;-->
+    <!--                      </div>-->
+    <!--                      <div class="media-body margin-0">-->
+    <!--                        <span class="pointer "> {{error.device}} </span>-->
+    <!--                      </div>-->
+    <!--                    </div>-->
+    <!--                  </td>-->
+    <!--                  <td><span class="label label-danger"> {{error.model}} </span></td>-->
+    <!--                  <td width="110" class="text-left"><b class="small"> {{error.timestamp | date: 'mediumTime'}}-->
+    <!--                    - {{error.timestamp |  date: 'mediumDate'}}</b></td>-->
+    <!--                  <td>-->
+    <!--                    <div class="">{{error.label}} </div>-->
+    <!--                  </td>-->
+    <!--                </tr>-->
+    <!--              </table>-->
+    <!--              <app-spin-loading [appLoader]="errorLoader" [size]="'sm'"></app-spin-loading>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
+  </div>
+
+  <div class="row margin-top-30">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading ">
+          <div class="panel-actions ">
+            <a class="panel-action icon ion-loop" data-toggle="tooltip" pTooltip="Refresh" (click)="getListing()"></a>
+          </div>
+          <h3 class="panel-title "><b>Waterheaters</b></h3>
+        </div>
+        <div class="panel-body padding-0 " *ngIf="showMap">
+          <div>
+            <div class="row">
+              <div class="col-sm-3">
+                <div class="form-group">
+                  <div class="input-icon">
+                    <p-dropdown [(ngModel)]="selectedModel" [options]="modelListing" styleClass="prime-dropdown"
+                      (onChange)="filterListing($event)" placeholder="Models">
+                    </p-dropdown>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3 pull-right">
+                <!-- <app-table-search [rows]="temp" [args]="['device_name_method', 'name']" [tooltipArray]="['ID',  'Name']"
+                  (filter)="updateFilter($event)" [disableTextBox]="listingLoader.visibility"></app-table-search> -->
+                <div class="input-icon">
+                  <input [disabled]="disableTextBox" type='text' name='searchTruck' class="form-control input-sm"
+                    autocomplete="off" [placeholder]="'Search'" [(ngModel)]="inputValue"
+                    (keyup)='updateFilter($event)' />
+                  <span class="icon fa fa-info-circle" [pTooltip]="'Search By ' + (tooltipArray)"
+                    tooltipPosition="left"></span>
+
+                </div>
+
+              </div>
+              <div class="col-lg-4">
+
+                <app-export-csv [fileName]="'Waterheaters'" [rows]="csvRows" [cols]="csvCols"
+                  *ngIf="!listingLoader.visibility && heaters.length">
+                </app-export-csv>
+
+                <span *ngIf="selectedRows.length">
+                  <button class="btn-danger btn  font-size-12 btn-sm fa fa-trash" (click)="showSwalForMultiple()">
+                    Delete</button>
+                </span>
+
+              </div>
+            </div>
+            <div class="row">
+              <p-progressBar *ngIf="listingLoader.visibility" [style]="{'height': '5px'}" mode="indeterminate">
+              </p-progressBar>
+              <ngx-datatable class="material defaultCursor" [columnMode]="'force'" [headerHeight]="50"
+                [footerHeight]="50" [rows]="heaters" [scrollbarH]="true" [rowHeight]="'auto'" [selected]="selectedRows"
+                [selectionType]="'checkbox'" (select)='onSelect($event)'>
+
+                <ngx-datatable-column frozenLeft="true" [width]="30" [sortable]="false" [canAutoResize]="false"
+                  [draggable]="false" [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Name" prop="name" frozenLeft="true">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span class="pointer" [routerLink]="gotoPage.gotoHeater(row.id)">
+                      <a> {{(value) || '-'}} </a>
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="ID" prop="device_name_method" frozenLeft="true">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span>
+                      {{(value) || '-'}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Model" prop="leased_owned_name">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span class="pointer">
+                      {{(value || '-')}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Type" prop="type">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span class="pointer">
+                      {{(value) || '-'}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Status" prop="online_status">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span class="label" [ngClass]="value? 'label-success' : 'label-danger'">{{value |
+                      StatusConvertPipe}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Last Updated" prop="signalRresponse.ts">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span>{{(value | date: 'short') | getNullOrUndefined}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="State" prop="signalRresponse.chs">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span>{{DeviceStateEnum[value] || '-'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Flange<br>Temperature" prop="signalRresponse.cht">
+                  <!--signalRresponse.cht? signalRresponse.cht:cht-->
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span *ngIf="value == '404' || value == 404">0℃'</span>
+                    <span *ngIf="value != '404' && value != 404">{{value ? (value + ' ℃') : '-'}}</span>
+                    <!-- {{value == !getNullOrUndefined ? value + ' ℃' : '-'}} -->
+                    <!-- {{(value| getNullOrUndefined) + ' ℃' || '-'}} -->
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Display<br>Temperature" prop="signalRresponse.cdt">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span *ngIf="value == '404' || value == 404">0℃'</span>
+                    <span *ngIf="value != '404' && value != 404">{{value ? (value + ' ℃') : '-'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <ngx-datatable-column name="Desired<br>Temperature" prop="signalRresponse.ctt">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span *ngIf="value == '404' || value == 404">0℃'</span>
+                    <span *ngIf="value != '404' && value != 404">{{value ? (value + ' ℃') : '-'}}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+
+                <ngx-datatable-column name="Identity<br>Expiry" prop="identity_expiry">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span>{{(value| getNullOrUndefined) }}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Firmware<br>Version" prop="software_version">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span>{{(value| getNullOrUndefined) }}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Hardware<br>Version" prop="hardware_version">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span>{{(value| getNullOrUndefined) }}</span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Capacity" prop="volume_capacity">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span class="pointer">
+                      {{value ? (value + ' Ltr') : '-'}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Classification" prop="past_club">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span class="pointer">
+                      {{(value) || '-'}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Frequency" prop="cnic">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span class="pointer">
+                      {{value ? (value + ' Hz') : '-'}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+                <ngx-datatable-column name="Record <br> Status" prop="status_label">
+                  <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+                    <span>
+                      {{value}}
+                    </span>
+                  </ng-template>
+                </ngx-datatable-column>
+
+                <span>
+                  {{heaters}}
+                </span>
+
+                <ngx-datatable-footer *ngIf="true">
+                  <ng-template ngx-datatable-footer-template>
+                    <pagination style="width: 100%; float: right;" [(ngModel)]="currentPage"
+                      [totalItems]="heaters_count" [maxSize]="20" [rotate]="true" [boundaryLinks]="true"
+                      (pageChanged)="pageChanged($event)"></pagination>
+                  </ng-template>
+                </ngx-datatable-footer>
+              </ngx-datatable>
+              <!-- heaters.count -->
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+
+    </div>
+
+
+  </div>
+</div>

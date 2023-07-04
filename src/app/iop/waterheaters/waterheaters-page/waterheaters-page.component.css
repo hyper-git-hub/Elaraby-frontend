@@ -1,0 +1,49 @@
+.ngx-datatable .datatable-footer .datatable-footer-inner{
+  text-align: right;
+}
+
+dt {
+  font-weight: bold;
+}
+
+dl,
+dd {
+  font-size: 12px;
+}
+
+dd {
+  margin-bottom: 1em;
+}
+
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#customers td{
+  border: 1px solid #ddd !important;
+  padding: 8px !important;
+}
+
+#customers th{
+  border: 1px solid #ddd !important;
+  padding: 8px !important;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: darkred;
+  color: white;
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+}

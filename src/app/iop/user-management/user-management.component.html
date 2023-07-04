@@ -1,0 +1,202 @@
+<div class="breadcrumb-box">
+  <ol class="breadcrumb breadcrumb-arrow ">
+    <li><a class="icon ion-ios-home" href="javascript:void(0)"> User Management </a></li>
+    <!-- <li><a href="javascript:void(0)"></a>User Management</li> -->
+  </ol>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="panel-actions">
+          <a class="panel-action icon ion-loop" data-toggle="tooltip" pTooltip="Refresh" tooltipPosition="top"
+            (click)="getUsersList()"></a>
+          <a class="btn btn-sm white no-border btn-success " href="" data-target="#editpop1" data-toggle="modal"
+            (click)="clearForm()"><i class="ion-plus"></i> Add User</a>
+        </div>
+        <h3 class="panel-title "><b>User List </b></h3>
+      </div>
+
+
+      <!-- add code here  -->
+
+
+
+
+
+
+    </div>
+  </div>
+</div>
+
+<div #formModal class="modal fade modal-info text-left" id="editpop1" role="dialog" tabindex="-1">
+  <div class="modal-dialog modal-center modal-lg">
+    <div class="modal-content">
+      <div class="modal-header" styleProp="">
+        <button type="button" class="close" #closeForm data-dismiss="modal">
+          <span>x</span>
+        </button>
+        <h4 class="modal-title">Add User</h4>
+      </div>
+
+      <div class="modal-body">
+        <div class="">
+          <div class="row">
+
+            <form [formGroup]="userForm" id="userFormID" (ngSubmit)="onSubmit(userForm.value)">
+              <div class="row">
+                <div class="col-lg-12">
+                  <div class="row">
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">First Name</label>
+                        <input type="text" formControlName="first_name" class="form-control" />
+                        <span class="error-message"
+                          *ngIf="userForm.get('first_name').getError('isAlphabetsAndNumbers')">Choose only
+                          alphabets/numbers </span>
+                        <span class="error-message" *ngIf="userForm.get('first_name').getError('required')">Required
+                        </span>
+
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">Last Name</label>
+                        <input type="text" formControlName="last_name" class="form-control" />
+                        <span class="error-message" *ngIf="userForm.get('last_name').getError('required')">Required
+                        </span>
+                        <span class="error-message"
+                          *ngIf="userForm.get('last_name').getError('isAlphabetsAndNumbers')">Choose only
+                          alphabets/numbers </span>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">Role</label>
+                        <input type="text" [readonly]="true" formControlName="role" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">Customer </label>
+                        <input type="text" [readonly]="true" formControlName="customer" class="form-control" />
+
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">Contact Number</label>
+                        <p-inputMask formControlName="contact_number" mask="99999-99-9999999" characterPattern="[0-9]"
+                          placeholder="99999-99-9999999" [styleClass]="'form-control'"></p-inputMask>
+
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">Date of Joining</label>
+                        <div class="input-icon">
+                          <p-calendar [readonlyInput]="false" [(ngModel)]="date_of_joining"
+                            styleClass="prime-datetime disabled" formControlName="date_joined"></p-calendar>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">Gender</label>
+                        <p-dropdown *ngIf="!restrictedForm;" styleClass="prime-dropdown" [options]="itemListGenders"
+                          formControlName="gender" placeholder="Gender">
+                        </p-dropdown>
+                        <input *ngIf="restrictedForm" type="text" class="form-control" formControlName="gender" />
+
+                      </div>
+                    </div>
+                    <div class="col-sm-4">
+                      <div class="form-group">
+                        <label class="control-label">Language</label>
+                        <p-dropdown *ngIf="!restrictedForm" styleClass="prime-dropdown" [options]="itemListLanguage"
+                          formControlName="language" placeholder="Select Language">
+                        </p-dropdown>
+                        <input *ngIf="restrictedForm" type="text" class="form-control" formControlName="language" />
+
+                      </div>
+                    </div>
+
+
+                    <button [disabled]="!userForm.valid || (!userForm.dirty)" type="submit"
+                      class="btn btn-sm btn-primary pull-right" form="userFormID">
+                      Save
+                    </button>
+
+
+                  </div>
+                </div> -->
+
+                <!-- upload picture -->
+                <!-- <div class="col-lg-3">
+                  <div class="padding-20 padding-bottom-0 padding-top-0">
+                    <div>
+                      <div class="form-group">
+                        <label class="control-label">Picture</label>
+                        <div class="input-icon">
+                          <div class="margin-bottom-10" id="preview">
+                            <div class="container1">
+                              <img #img [src]="avatar_url? avatar_url : 'assets/images/driver_placeholder.png'"
+                                class=" image img-rounded img-bordered img-bordered-green" width="150px" height="150px">
+                              <div class="middle col-md-7">
+                                <button *ngIf="avatar_url" type="button" class="btn btn-sm btn-primary"
+                                  (click)="removeImage()">Remove
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <input *ngIf="!avatar_url" #myInput type="file" (change)="fileChange($event)"
+                            class="btn btn-default btn-block" accept="image/*">
+
+
+                        </div>
+                        <span>
+
+                          <div *ngIf="notImage" [hidden]="!showAlert" class="alert alert-warning">
+                            <a href="#" class="close font-weight-600" style="margin-top:-4px"
+                              (click)="showAlert = false" aria-label="close" title="close">×</a>
+                            Couldn't change! Please choose only (/jpg, .png images).
+                          </div>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div> -->
+
+              </div>
+              <hr />
+
+
+              <hr />
+
+
+            </form>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+
+        <!-- <button type="button" class="btn btn-warning"
+          [disabled]="qrForm.invalid && device_ids.length<1 || (saveRecordLoader.visibility || generateReportLoader.visibility)"
+          (click)="SaveBtnClicked(qrForm.value)">{{btn2Text}}
+          <i class="icon  ion-ios-information-outline" pTooltip="Save QR only. You can generate pdf later."></i>
+        </button>
+        <button type="submit" class="btn btn-primary" form="qrFormID"
+          [disabled]="qrForm.invalid  && device_ids.length < 1 || (saveRecordLoader.visibility || generateReportLoader.visibility)"
+          (click)="generateBtnClicked(qrForm.value)">{{btn1Text}}
+          <i class="icon ion-ios-information-outline " pTooltip="This will generate & save QR"
+            tooltipStyleClass="ptooltip-class"></i>
+        </button> -->
+
+      </div>
+    </div>
+  </div>
+</div>

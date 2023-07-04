@@ -1,0 +1,121 @@
+<nav class="site-navbar navbar navbar-default navbar-fixed-top navbar-mega  " [ngClass]="bgColor" role="navigation">
+  <div class="navbar-header ">
+    <div class="navbar-brand navbar-brand-center site-gridmenu-toggle" data-toggle="gridmenu">
+      <a>
+        <img class="navbar-brand-logo" [src]="logo" title="img">
+        <span class="navbar-brand-text hidden-xs"> <b>Internet of Power</b> <i> Powered by Hypernym</i> </span>
+
+      </a>
+    </div>
+  </div>
+  <div class="navbar-container container-fluid">
+
+    <div class="collapse navbar-collapse navbar-collapse-toolbar" id="site-navbar-collapse">
+
+      <ul class="nav navbar-toolbar">
+        <li class="hidden-float" id="toggleMenubar">
+          <a data-toggle="menubar" href="#">
+            <i class="icon hamburger hamburger-arrow-left">
+              <span class="sr-only">Toggle menubar</span>
+              <span class="hamburger-bar"></span>
+            </i>
+          </a>
+        </li>
+        <li class="hidden-float padding-5" *ngIf="user.user_role_name == 'Admin'">
+          <app-global-search-bar></app-global-search-bar>
+        </li>
+      </ul>
+
+
+      <ul class="nav navbar-toolbar navbar-right navbar-toolbar-right">
+
+        <li class="dropdown defaultCursor">
+          <a [title]="userEmail" id="no-hover1" class="white">Signed in as <b> {{user.email}} </b></a>
+        </li>
+        <!-- Notification Start -->
+        <li class="dropdown" (click)="btnClick()">
+
+
+          <a #closeForm data-toggle="dropdown" href="javascript:void(0)" title="Notifications">
+            <i class="ion-android-notifications"></i>
+            <span data-toggle="dropdown" *ngIf="alert_count" class="badge badge-danger up">{{alert_count}}</span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right dropdown-menu-media">
+            <li class="dropdown-menu-header">
+              <h5>NOTIFICATIONS / ALERTS</h5>
+              <span *ngIf="alert_count" class="label label-round label-danger">New {{alert_count}}</span>
+              <span class="" style="position: absolute;  right: 0; top: 18px;">
+                <a class="icon ion-loop pointer" (click)="refreshNotifications()"></a>
+              </span>
+            </li>
+            <p-dataList emptyMessage="No Records for today" [value]="notifications_list">
+              <ng-template let-alert pTemplate="item">
+                <a class="list-group-item" data-dismiss="dropdown" [ngClass]="{'unviewed':isViewed(alert['is_viewed'])}"
+                  href="javascript:void(0)" (click)="goto_alert(alert)">
+                  <div class="media">
+                    <div class="media-left padding-right-10">
+                      <i [ngClass]="getIconClass(alert['notification_type'])"
+                        [ngStyle]="getIconStyle(alert['notification_type'])"></i>
+                    </div>
+                    <div class="media-body">
+                      <span class="label label-outline label-primary margin-right-5">
+                        {{get_type(alert['notification_type']) }} </span>
+                      <span *ngIf="alert['activity_type'] !== null"
+                        class="label label-outline label-success margin-right-5"> {{alert['activity_type']}} </span>
+                      <span class="pull-right font-size-10 ">{{alert['minutes_ago']}} </span>
+                      <h6 class="media-heading margin-top-10">
+                        {{alert['title']}}
+                      </h6>
+                    </div>
+                  </div>
+                </a>
+              </ng-template>
+
+            </p-dataList>
+          </ul>
+        </li>
+
+        <!-- Notification End -->
+        <li class="dropdown">
+          <a class="navbar-avatar dropdown-toggle" data-toggle="dropdown" href="#">
+            <span class="avatar avatar-online">
+
+              <img style="height:30px !important;"
+                [src]="user.avatar? user.avatar : '../../../../assets/images/default_user.png'" alt="...">
+
+              <i></i>
+            </span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a [routerLink]="'profile'" onclick="$('#dropdown1').removeClass('open');">Profile</a></li>
+            <li class="disabled"><a [routerLink]="'admin/settings'"
+                onclick="$('#dropdown1').removeClass('open');">Preferences</a>
+            </li>
+            <li class="disabled">
+              <a [routerLink]="'/admin/user'">Invite User</a>
+            </li>
+            <li class="divider dropdown-divider "></li>
+            <li><a (click)="logout()" onclick="$('#dropdown1').removeClass('open');">Logout</a>
+            </li>
+          </ul>
+        </li>
+
+
+      </ul>
+    </div>
+    <div class="collapse navbar-search-overlap" id="site-navbar-search">
+      <form role="search">
+        <div class="form-group">
+          <div class="input-search">
+            <i class="input-search-icon ion-ios-search-strong"></i>
+            <input type="text" class="form-control" name="site-search" placeholder="Search...">
+            <button type="button" class="input-search-close icon ion-close" data-target="#site-navbar-search"
+              data-toggle="collapse"></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</nav>
+<p-growl *ngIf="msgs.length" #try [style]="{marginTop: '70px', width: '270px', height:'60px'}" style="z-index:-1;"
+  [(value)]="msgs"></p-growl>

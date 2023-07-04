@@ -1,0 +1,61 @@
+
+
+.bg-iop-800 { background-color: #bf3437 !important; }
+.bg-iop-700 { background-color: #bf3437 !important; }
+.bg-iop-600 { background-color: #bf3437 !important; }
+.bg-iop-500 { background-color: #bf3437 !important; }
+.bg-iop-400 { background-color: #bf3437 !important; }
+.bg-iop-300 { background-color: #bf3437 !important; }
+.bg-iop-200 { background-color: #bf3437 !important; }
+.bg-iop-100 { background-color: #bf3437 !important; }
+
+
+.iop-100 { color: #bf3437 !important; }
+.iop-200 { color: #bf3437 !important; }
+.iop-300 { color: #bf3437 !important; }
+.iop-400 { color: #bf3437 !important; }
+.iop-500 { color: #bf3437 !important; }
+.iop-600 { color: #bf3437 !important; }
+.iop-700 { color: #bf3437 !important; }
+.iop-800 { color: #bf3437 !important; }
+
+
+.site-menu > .site-menu-item.active > a:before { border-color: #bf3437 !important; }
+.site-menu > .site-menu-item.active > a:after { border-right-color: #bf3437 !important; }
+
+
+
+/*.bg { background-image: url(../images/bg.jpg); background-size: cover; background-position: bottom center; }*/
+
+
+.color-list { }
+.color-list ul { list-style: none; padding: 0; margin: 0; }
+.color-list ul li { margin: 0; display: block; margin-left: 0px; }
+.color-list ul li i { width: 15px; height: 15px; display: inline-block; margin-right: 4px; float: left; position: relative; top: 0px; border-radius: 50%; }
+
+
+
+
+
+
+
+
+#chartdiv { width: 100%; height: 300px; }
+
+
+.split { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; }
+.content { border: 1px solid #eee; box-shadow: inset 0 1px 2px #fff; background-color: #fff; }
+.gutter { background-color: transparent; background-repeat: no-repeat; background-position: 50%; }
+.gutter.gutter-horizontal { cursor: col-resize; }
+.gutter.gutter-vertical { cursor: row-resize; }
+.split.split-horizontal, .gutter.gutter-horizontal { height: 100%; float: left; background: #ccc; }
+
+
+
+
+
+.battery { position: relative; display: inline-block; margin: 0; float: none; margin-left: 0; outline: 3px solid #555; width: 30px; border-radius: 2px; text-align: left; height: 12px; margin-right: 10px; z-index: 5; top: 2px; }
+.battery span { display: inline-block;     left: 0; background: coral; height: 100%; position: absolute; bottom: 0; top: 0px; z-index: 0; }
+.battery:before { /* content: ""; */ display: block; background: transparent; border: 3px solid #555; margin: 0; width: 40px; height: 20px; position: absolute; border-radius: 2px; }
+.battery:after { content: ""; display: block; background: transparent; border: 3px solid #555; width: 0px; height: 12px; position: absolute; border-radius: 2px; right: -5px; top: 0px; }
+.battery.empty { width: 30px; }

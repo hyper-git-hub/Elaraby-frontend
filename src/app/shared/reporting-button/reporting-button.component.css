@@ -1,0 +1,11 @@
+/* .main-container ::ng-deep p-calendar .ui-datepicker.ui-widget-content {
+  width: auto !important;
+  height: 33px !important;
+  overflow: visible !important; 
+}*/
+
+/* ::ng-deep .ui-datepicker.ui-widget-content {
+    width: auto !important;
+    height: 33px !important;
+    overflow: visible !important;
+}  */

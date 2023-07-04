@@ -1,0 +1,260 @@
+<div class="breadcrumb-box">
+  <ol class="breadcrumb breadcrumb-arrow ">
+    <li><a class="icon ion-ios-home" href="javascript:void(0)"> Form </a></li>
+    <li><a href="javascript:void(0)">QR Generation</a></li>
+  </ol>
+</div>
+<div class="page-content container-fluid">
+  <p-confirmDialog></p-confirmDialog>
+
+  <!-- GENERATE QR CODE MODAL-->
+  <div #formModal class="modal fade  modal-info text-left" id="editpop1" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-center  modal-md">
+      <div class="modal-content">
+        <div class="modal-header" styleProp="">
+          <button type="button" class="close" #closeForm data-dismiss="modal">
+            <span>x</span>
+          </button>
+          <h4 class="modal-title">Generate QR Code</h4>
+        </div>
+        <!--ngNativeValidate-->
+        <div class="modal-body">
+          <div class="">
+            <div class="row">
+              <div class="">
+                <div class="d-chips col-sm-12 col-lg-12 form-group" [ngClass]="{'hidden':device_ids.length < 1}">
+                  <label class="control-label form-label">Total Devices: {{ device_ids.length}}</label>
+                  <p-chips [inputStyle]="{'color':'transparent'}" [(ngModel)]="device_ids" (onRemove)="remove($event);"
+                    (keydown)="onChange($event)"></p-chips>
+                </div>
+                <form novalidate [formGroup]="qrForm" id="qrFormID">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <label class="control-label form-label">SSID/ WIFI ID (vendor-product-model-macaddress)</label>
+                          <div class="input-icon">
+                            <input class="form-control" formControlName="ssid" placeholder="ex: elaraby-wh-65l-abcd"
+                             
+                            />
+                            <span class="error-message"
+                              *ngIf="qrForm.get('ssid').getError('isAlphabetsAndNumbers')">Enter alphabets or numbers
+                              only<br>
+                            </span>
+
+                            <span class="error-message" *ngIf="(qrForm.get('ssid').touched || qrForm.get('ssid').dirty) &&
+                            qrForm.get('ssid').hasError('whitespace')">Please enter
+                              valid data
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-sm-12">
+                        <div class="form-group">
+                          <button class="btn btn-sm btn-info pull-right" [disabled]="qrForm.invalid"
+                            (click)="addMore(qrForm.value)"><i class="fa fa-plus"> Add more </i></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <span [ngClass]="(!saveRecordLoader.visibility && !generateReportLoader.visibility)?'hidden':''"><img
+              src="/assets/images/iop/label-loader.gif" height="25px" width="25px"></span>
+          <button type="button" class="btn btn-warning"
+            [disabled]="qrForm.invalid && device_ids.length<1 || (saveRecordLoader.visibility || generateReportLoader.visibility)"
+            (click)="SaveBtnClicked(qrForm.value)">{{btn2Text}}
+            <i class="icon  ion-ios-information-outline" pTooltip="Save QR only. You can generate pdf later."></i>
+          </button>
+          <button type="submit" class="btn btn-primary" form="qrFormID"
+            [disabled]="qrForm.invalid  && device_ids.length < 1 || (saveRecordLoader.visibility || generateReportLoader.visibility)"
+            (click)="generateBtnClicked(qrForm.value)">{{btn1Text}}
+            <i class="icon ion-ios-information-outline " pTooltip="This will generate & save QR"
+              tooltipStyleClass="ptooltip-class"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- UPLOAD FILE MODAL -->
+  <div class="modal modal-info fade" id="uploadFile" role="dialog" tabindex="-1">
+    <div class="modal-dialog modal-center  modal-lg">
+
+      <div class="modal-header bg-iop-800">
+        <button type="button" #closeButtonForUploadForm class="close" data-dismiss="modal"
+          (click)="resetUploadFileForm()">&times;
+        </button>
+        <h4 class="modal-title">Upload File</h4>
+      </div>
+
+      <div class="modal-content">
+        <p-progressBar *ngIf="uploadLoader.visibility || readFileLoader.visibility" [style]="{'height': '5px'}"
+          mode="indeterminate"></p-progressBar>
+
+        <p-fileUpload name="demo[]" customUpload="true" accept=".xlsx" maxFileSize="5000000"
+          [disabled]="uploadedFiles.length >= 1" [showUploadButton]="false" [showCancelButton]="false"
+          (onRemove)="removeUploadedFile($event)" (onError)="onError($event)" (onSelect)="onUpload($event)">
+
+          <ng-template pTemplate="toolbar">
+            <div class="pull-left" *ngIf="uploadedFiles.length">
+              <button pButton type="button" [disabled]="uploadLoader.visibility" (click)="submitFile()" label="Submit"
+                class="ui-button-success" icon="fa-check "></button>
+            </div>
+          </ng-template>
+
+          <ng-template let-file pTemplate="file">
+            <div class="ui-fileupload-row ng-star-inserted" *ngFor="let file of uploadedFiles;let i=index">
+              <div></div>
+              <div>{{file.name}}</div>
+              <div>{{file.size}} bytes</div>
+              <div>
+                <button class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only"
+                  (click)="removeUploadedFile(file)"><span aria-hidden="true"
+                    class="ui-button-icon-left ui-clickable fa fa-fw fa-close"></span><span
+                    class="ui-button-text ui-clickable">ui-btn</span></button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="content">
+            <div *ngIf="uploadedFiles.length < 1">
+              <div class="bg-teal-100 padding-20 text-center margin-bottom-30" style="border:2px dashed #eee;">
+                <span> <img src="assets/images/iop/icon-file-upload.png" alt="" height="80"> <br> <br> Drag and drop
+                  your file here </span>
+              </div>
+
+              <div class="text-center">
+                <b class="font-size-12">
+                  You can order the columns any way you like.
+                </b>
+                <a class="pointer" href="/assets/docs/sample.xlsx" download="sample/xlsx"> Get basic sample file here
+                </a>
+              </div>
+            </div>
+          </ng-template>
+
+        </p-fileUpload>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="panel panel-default">
+        <div class="panel-heading  ">
+          <div class="panel-actions">
+            <a class="panel-action icon ion-loop" data-toggle="tooltip" pTooltip="Refresh" tooltipPosition="top"
+              (click)="getDeviceDetails()"></a>
+            <a class="btn btn-sm white no-border btn-info " href="" data-target="#uploadFile" data-toggle="modal"
+              (click)="resetUploadFileForm()"> <i class="ion-plus"></i> Upload File</a>
+            <a class="btn btn-sm white no-border btn-success " href="" data-target="#editpop1" data-toggle="modal"
+              (click)="clearForm()"> <i class="ion-plus"></i> Generate QR Code</a>
+          </div>
+          <h3 class="panel-title "><b>Device List </b></h3>
+        </div>
+        <div class="panel-body padding-0">
+          <div class="">
+            <div class="vscroll padding-right-10" style="height:auto;">
+              <div class="table-responsive dt-table">
+                <div class="row margin-bottom-15">
+                  <div class="col-lg-3 form-group">
+                    <p-dropdown [(ngModel)]="selectedFilter" [options]="filters"
+                      (ngModelChange)="sortingDropdownChanged($event)" styleClass="prime-dropdown razzaki"
+                      [showClear]="true" placeholder="Sort By">
+                    </p-dropdown>
+                  </div>
+                  <div class="col-lg-3 form-group">
+                    <p-dropdown *ngIf="selectedFilter" [(ngModel)]="selectedSecondaryFilter"
+                      (ngModelChange)="applySortingFilter()" styleClass="prime-dropdown razzaki"
+                      [options]="secondaryFilters">
+                    </p-dropdown>
+                  </div>
+                  <div class="col-lg-3  pull-right">
+                    <app-table-search [disableTextBox]="appLoader.visibility" [args]="['ssid']"
+                      [tooltipArray]="['Search by SSID/WIFI ID']" [rows]="temp" (filter)="updateFilter($event)">
+                    </app-table-search>
+                    <!--                    <input type='text' class="form-control input-sm" [placeholder]="'Search by SSID/WIFI ID'"-->
+                    <!--                           [disabled]="appLoader.visibility"-->
+                    <!--                           [(ngModel)]="inputValue" (keyup)='updateFilter($event)'/>-->
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col-lg-3" *ngIf="selectedRows.length > 1">
+                    <div class="row">
+                      <div class="col-lg-9">
+                        <button class="btn-success btn  font-size-12 btn-sm" (click)="generateQRforMultiple()">Generate
+                          QR for selected rows
+                        </button>
+                      </div>
+                      <div class="col-lg-2">
+                        <button class="btn-danger btn  font-size-12 btn-sm" (click)="showSwalForMultiple()">Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-lg-7 row pull-right">
+
+                    <app-reporting-buttons [type]="'eventsCreated'" [calendarType]="'range'"
+                      [calendarDimension]="'col-sm-5'" (btnClicked)="getReport($event)"
+                      [buttonGroupSize]="'btn-group-sm'"></app-reporting-buttons>
+                    <!--                    <button class="btn btn-sm btn-default" (click)="resetFilters()" pTooltip="Reset Filter"><i class="fa fa-times"></i></button>-->
+
+
+                  </div>
+
+                </div>
+                <p-progressBar *ngIf="appLoader.visibility" [style]="{'height': '5px'}" mode="indeterminate">
+                </p-progressBar>
+                <ngx-datatable class="material defaultCursor" [columnMode]="'force'" [headerHeight]="50"
+                  [footerHeight]="50" [rowHeight]="'auto'" [limit]="20" [loadingIndicator]="loading"
+                  [selected]="selectedRows" [selectionType]="'checkbox'" (select)='onSelect($event)' [rows]='devices'>
+                  <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false"
+                    [resizeable]="false" [headerCheckboxable]="true" [checkboxable]="true">
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Wifi ID" prop="ssid">
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                      <span>{{value || '-'}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Device Password" prop="password">
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                      <span>{{value | convertToPassword}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                  <ngx-datatable-column name="Created Date" prop="created_datetime">
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                      <span>{{(value | date: 'medium') || '-'}}</span>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                  <ngx-datatable-column name="Actions" [cellClass]="'text-right'" [headerClass]="'text-right'">
+                    <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                      <button type="button" pTooltip="Delete"
+                        class="btn btn-icon btn-outline btn-round btn-default btn-xs"
+                        (click)="showSwalForMultiple(row)">
+                        <i class="icon fa fa-trash"></i>
+                      </button>
+                      <button type="button" pTooltip="Generate"
+                        class="btn btn-icon btn-outline btn-round btn-default btn-xs" (click)="generateQR(row)">
+                        <i class="icon fa fa-qrcode"></i>
+                      </button>
+                    </ng-template>
+                  </ngx-datatable-column>
+
+                </ngx-datatable>
+              </div>
+            </div>
+            <!--<app-spin-loading [appLoader]="appLoader"></app-spin-loading>-->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

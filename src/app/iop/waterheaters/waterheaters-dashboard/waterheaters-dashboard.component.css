@@ -1,0 +1,35 @@
+.ngx-datatable .datatable-footer .datatable-footer-inner{
+    text-align: right;
+}
+
+#heaterdropdown1 .ui-dropdown-trigger {
+  background-color: #d6494b !important;
+  color: white !important;
+}
+.material-dropdown >>> .ui-dropdown-label {
+  font-size: 12px  !important;
+  text-align: center !important;
+  display: block !important;
+  padding: 3px 20px !important;
+  clear: both !important;
+}
+
+.material-dropdown >>> .ui-state-default {border: none !important;}
+.material-dropdown >>> .ui-dropdown .ui-dropdown-trigger { width: 0 !important;}
+/*.material-dropdown >>> .ui-dropdown {width:145px !important;}*/
+.material-dropdown >>> .ui-state-highlight {background-color: #e4eaec;}
+.material-dropdown >>> .ui-dropdown-item {
+  text-align: center !important;
+  display: block !important;
+  padding: 3px 20px !important;
+  clear: both !important;
+  font-weight: normal !important;
+  line-height: 1.57142857 !important;
+  color: #76838f !important;
+  white-space: nowrap !important;
+}
+.material-dropdown >>> .ui-dropdown .ui-dropdown-trigger .fa {
+  margin-top: 7px;
+  margin-left: -30px;
+}
+

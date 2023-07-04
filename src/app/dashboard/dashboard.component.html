@@ -1,0 +1,279 @@
+<app-breadcrumbs [home]="home"></app-breadcrumbs>
+
+<div class="page-header padding-0 margin-bottom-30">
+  <div class="widget widget-article type-flex margin-bottom-0">
+    <div class="widget-header cover overlay">
+      <img class="cover-image height-200" src="assets/images/iop/header.jpg" alt="">
+      <div class="overlay-panel text-center vertical-align">
+        <div class="widget-metas vertical-align-middle blue-grey-800">
+          <div class="widget-title font-size-48 margin-bottom-0 blue-grey-800 white"
+               style="font-size:30px; text-transform:none;">Internet of Power
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-content  container-fluid">
+  <div class="row no-space1  ">
+
+    <div class="col-lg-2 col-md-4">
+
+
+      <a [routerLink]="'waterheaters'" style="text-decoration:none;">
+        <div class="widget">
+          <div
+            class="widget-content padding-top-20 bg-teal-700 white shadow padding-left-0 padding-right-0  relative card hover">
+            <div class="counter counter-lg counter-inverse">
+              <b class="counter-label font-size-16 text-uppercase margin-bottom-10  ">Water Heater</b>
+              <div class="counter-number-group">
+                <span class="counter-icon margin-right-10"><img src="assets/images/iop/icon-water-heater.png"
+                                                                height="50"/></span>
+                <span class="counter-number font-size-40">{{devices.water_heater || 0}}</span>
+              </div>
+              <div class="white  bg-teal-700  flat right bottom font-size-10 padding-15 margin-top-20 ">
+                <br/>
+                <b class="font-size-20"></b>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="col-lg-2 col-md-4">
+      <div class="widget">
+        <div
+          class="widget-content padding-top-20 bg-orange-700 white shadow padding-left-0 padding-right-0  relative card hover">
+          <div class="counter counter-lg counter-inverse">
+            <b class="counter-label font-size-16 text-uppercase margin-bottom-10 ">Refrigerator</b>
+            <div class="counter-number-group">
+              <span class="counter-icon margin-right-10"><img src="assets/images/iop/icon-fridge.png"
+                                                              height="50"/></span>
+              <span class="counter-number font-size-40">{{devices.refrigerator}}</span>
+            </div>
+            <div class="white  bg-orange-700  flat right bottom font-size-10 padding-15 margin-top-20 ">
+              <br/>
+              <b class="font-size-20"></b>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+      <div class="widget">
+        <div
+          class="widget-content padding-top-20 bg-blue-700 white shadow padding-left-0 padding-right-0  relative card hover">
+          <div class="counter counter-lg counter-inverse">
+            <b class="counter-label font-size-16 text-uppercase margin-bottom-10 ">Water Dispenser</b>
+            <div class="counter-number-group">
+              <span class="counter-icon margin-right-10"><img src="assets/images/iop/icon-water-dispenser.png"
+                                                              height="50"/></span>
+              <span class="counter-number font-size-40">{{devices.water_dispenser}}</span>
+            </div>
+            <div class="white  bg-blue-700  flat right bottom font-size-10 padding-15 margin-top-20 ">
+              <br/>
+              <b class="font-size-20"></b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+      <div class="widget">
+        <div
+          class="widget-content padding-top-20 bg-grey-700 white shadow padding-left-0 padding-right-0  relative card hover">
+          <div class="counter counter-lg counter-inverse">
+            <b class="counter-label font-size-16 text-uppercase margin-bottom-10 ">Air Conditioner</b>
+            <div class="counter-number-group">
+              <span class="counter-icon margin-right-10"><img src="assets/images/iop/icon-air-conditioner.png"
+                                                              height="50"/></span>
+              <span class="counter-number font-size-40">{{devices.air_conditioner}}</span>
+            </div>
+            <div class="white  bg-grey-700  flat right bottom font-size-10 padding-15 margin-top-20 ">
+              <br/>
+              <b class="font-size-20"></b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+      <div class="widget">
+        <div
+          class="widget-content padding-top-20 bg-green-700 white shadow padding-left-0 padding-right-0  relative card hover">
+          <div class="counter counter-lg counter-inverse">
+            <b class="counter-label font-size-16 text-uppercase margin-bottom-10 ">Washing Machine</b>
+            <div class="counter-number-group">
+              <span class="counter-icon margin-right-10"><img src="assets/images/iop/icon-washing-machine.png"
+                                                              height="50"/></span>
+              <span class="counter-number font-size-40">{{devices.washing_machine}}</span>
+            </div>
+            <div class="white  bg-green-700  flat right bottom font-size-10 padding-15 margin-top-20 ">
+              <br/>
+              <b class="font-size-20"></b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2 col-md-4">
+      <div class="widget">
+        <div
+          class="widget-content padding-top-20 bg-cyan-600 white shadow padding-left-0 padding-right-0  relative card hover">
+          <div class="counter counter-lg counter-inverse">
+            <b class="counter-label font-size-16 text-uppercase margin-bottom-10 ">Deep Freezer</b>
+            <div class="counter-number-group">
+              <span class="counter-icon margin-right-10"><img src="assets/images/iop/icon-freezer.png"
+                                                              height="50"/></span>
+              <span class="counter-number font-size-40">{{devices.deep_freezer || 0}}</span>
+            </div>
+            <div class="white  bg-cyan-600  flat right bottom font-size-10 padding-15 margin-top-20 ">
+              <br/>
+              <b class="font-size-20"></b>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6">
+
+      <div class="panel panel-default ">
+        <div class="panel-heading  ">
+          <h3 class="panel-title "><b> Device Classifications </b></h3>
+          <div class="panel-actions">
+            <a class="panel-action icon ion-loop" data-toggle="tooltip" pTooltip="Refresh" tooltipPosition="bottom"
+               tooltipPosition="bottom" (click)="getDevicesCount()"></a>
+          </div>
+        </div>
+        <div class="panel-body padding-0">
+          <div class="chartbox">
+            <app-pie-chart *ngIf="pieChartData.length;else notFound" [pieChartData]="pieChartData"
+                           [pieChartLabels]="pieChartLabel" [percentToolTip]="true"
+                           [chartHeight]="'250px'"></app-pie-chart>
+            <ng-template #notFound>
+              <app-data-not-found></app-data-not-found>
+            </ng-template>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="panel panel-default  margin-bottom-0">
+        <div class="panel-heading">
+          <h3 class="panel-title font-weight-600">Sale Trends</h3>
+          <div class="panel-actions">
+            <a class="panel-action icon ion-loop" data-toggle="tooltip" pTooltip="Refresh" tooltipPosition="top"
+               (click)="getSaleTrends()"></a>
+          </div>
+        </div>
+
+
+        <div class="panel-body padding-0">
+          <div class="bg-green-100 padding-10">
+            <div class="padding-10  bg-white  margin-bottom-0 ">
+              <div class="table-responsive vscroll1">
+                <table class="table  table-condensed  no-border  margin-bottom-0 font-size-16">
+                  <tbody>
+                  <tr>
+                    <td width="">
+                      <div class="font-size-24  font-weight-600 red-800"> {{saleTrends.sold_this_week || 0}} Units</div>
+                      <div class="font-size-12 font-weight-600"> Week</div>
+                      <div class="font-size-14 margin-top-0">
+                        <span class="">{{(saleTrends.this_week_percentage | number: '2.0-2') || 0}}%</span>
+                        <span class="">{{ saleTrends.week_status}} than last week</span>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="margin-top-10 bg-green-100 padding-5 font-size-30 red-800">
+                        <i
+                          [class]="saleTrends.week_status === 'less' ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="">
+                      <div class="font-size-24 orange-800 font-weight-600 "> {{saleTrends.sold_this_month || 0}} Units
+                      </div>
+                      <div class="font-size-12 font-weight-600">Month</div>
+                      <div class="font-size-14 margin-top-0">
+                        <span class="">{{(saleTrends.this_month_percentage | number: '2.0-2') || 0}}%</span>
+                        <span class="">{{ saleTrends.month_status}} than last month</span>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="margin-top-10 bg-green-100 padding-5 font-size-30 orange-800">
+                        <i
+                          [class]="saleTrends.month_status  === 'less' ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="">
+                      <div class="font-size-24 orange-800 font-weight-600 "> {{saleTrends.sold_this_year || 0}} Units
+                      </div>
+                      <div class="font-size-12 font-weight-600"> Year</div>
+                      <div class="font-size-14 margin-top-0">
+                        <span class="">{{(saleTrends.this_year_percentage | number: '2.0-2') || 0}}%</span>
+                        <span class="">{{ saleTrends.year_status}} than last year</span>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="margin-top-10 bg-green-100 padding-5 font-size-30 orange-800">
+                        <i
+                          [class]="saleTrends.year_status  === 'less' ? 'ion-arrow-graph-down-right' : 'ion-arrow-graph-up-right'"></i>
+                        <!--<img src="images/arrow-down.png" alt="img" height="30" class="inline">-->
+                      </div>
+                    </td>
+                  </tr>
+
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+
+          </div>
+          <app-spin-loading [appLoader]="saleTrendLoader" [size]="'sm'"></app-spin-loading>
+
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+  <div class="row margin-top-10">
+    <div class="col-lg-12">
+      <div class="panel panel-default ">
+        <div class="panel-heading  ">
+          <h3 class="panel-title "><b> Sold & Activated Devices </b></h3>
+        </div>
+        <div class="panel-body padding-0">
+          <div class="tab-content">
+            <div class="margin-bottom-10  row">
+              <app-reporting-buttons [selected]="'today'" (btnClicked)="setupReport($event)"
+                                     [buttonGroupColor]="'btn-success'"
+                                     [buttonGroupSize]="'btn-group-sm'"></app-reporting-buttons>
+            </div>
+          </div>
+          <div class="chartbox">
+            <app-bar-chart *ngIf="datasets.length" [axislabels]="{'x': 'Appliances', 'y': 'Units'}"
+                           [showGridLines]="true" [barChartLabels]="labels" [barChartData]="datasets"
+                           [legendsObj]="legendsObj" [chartHeight]="'250px'"></app-bar-chart>
+            <app-spin-loading [appLoader]="soldGraphLoader" [size]="'sm'"></app-spin-loading>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

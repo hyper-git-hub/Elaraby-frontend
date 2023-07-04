@@ -1,0 +1,31 @@
+.wave {
+  display: inline-block;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: currentColor;
+  margin: 2px;
+}
+
+
+.waveStrength-3 .wv4.wave,
+.waveStrength-2 .wv4.wave,
+.waveStrength-2 .wv3.wave,
+.waveStrength-1 .wv4.wave,
+.waveStrength-1 .wv3.wave,
+.waveStrength-1 .wv2.wave {
+  border-top-color: lightsteelblue;
+}
+
+.waveStrength-0 .wv4{
+  border-top-color: lightsteelblue;
+}
+.waveStrength-0 .wv3{
+  border-top-color: lightsteelblue;
+}
+.waveStrength-0 .wv2{
+  /*border-top-color: grey;*/
+  border-top-color: lightsteelblue;
+}
+.waveStrength-0 .wv1{
+  border-top-color: lightsteelblue;
+}
