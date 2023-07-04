@@ -14,12 +14,10 @@
 
 
 #stage 1
-FROM node:14-alpine
+FROM node:10-alpine as node
 WORKDIR /app
-# COPY . .
-COPY package*.json ./
+COPY . .
 RUN npm install
-# COPY . .
 RUN npm run build --prod
 #stage 2
 FROM nginx:alpine
