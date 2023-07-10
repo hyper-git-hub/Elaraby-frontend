@@ -98,7 +98,7 @@ export class QrGenerationFormComponent implements OnInit {
   }
 
   public noWhitespaceValidator(control: FormControl) {
-    debugger
+    // debugger
     const isWhitespace = control.value.charAt(0) === ' '? true: false;
     const isValid = !isWhitespace;
     const ss = isValid ? null : { 'whitespace': true };
