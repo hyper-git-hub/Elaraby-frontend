@@ -98,7 +98,6 @@ export class QrGenerationFormComponent implements OnInit {
   }
 
   public noWhitespaceValidator(control: FormControl) {
-    // debugger
     const isWhitespace = control.value.charAt(0) === ' '? true: false;
     const isValid = !isWhitespace;
     const ss = isValid ? null : { 'whitespace': true };
@@ -141,7 +140,6 @@ export class QrGenerationFormComponent implements OnInit {
         this.resetUploadFileForm();
       }
     }
-
   }
 
   /***
@@ -162,6 +160,7 @@ export class QrGenerationFormComponent implements OnInit {
       reader.onload = (e: any) => {
         /* read workbook */
         const bstr: string = e.target.result;
+        console.log('Binary String:',bstr);
         const wb: XLSX.WorkBook = XLSX.read(bstr, { type: 'binary' });
 
         /* grab first sheet */
