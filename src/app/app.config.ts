@@ -12,7 +12,8 @@ export class AppConfig {
   // 'http://iotsa.staging.elarabygroup.com'            //staging url
   // 'http://20.46.150.26'; // Staging
   // https://iotsa.backend.elarabygroup.com/
-  private static readonly URL_PROD = 'https://dev-be.aquasense.hypernymbiz.com';
+  // private static readonly URL_PROD = 'https://dev-be.aquasense.hypernymbiz.com';
+  private static readonly URL_PROD = 'https://dev-be.aquasyncpro.hypernymbiz.com';
   private static readonly URL_DEV = AppConfig.URL_PROD;
 
   private static _URL = '';
